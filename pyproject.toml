@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ultrafiltration"
+version = "1.0.0"
+authors = [
+  { name="P0rtalPirate", email="raj.jiwe9@gmail.com" },
+]
+description = "Professional touch-friendly control system for UltraFiltration water processing."
+readme = "README.md"
+requires-python = ">=3.7"
+dependencies = [
+    "python-dotenv",
+]
+
+[project.scripts]
+ultra-filt = "src.main:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["src*"]

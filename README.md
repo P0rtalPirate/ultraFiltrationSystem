@@ -26,8 +26,13 @@ UltraFiltration/
 └── .env                # Environment configuration
 ```
 
-## Installation
+## Installation (Automatic - Recommended)
+Run this single command on your Raspberry Pi to install everything and set up auto-boot:
+```bash
+curl -sSL https://raw.githubusercontent.com/P0rtalPirate/ultraFiltrationSystem/main/scripts/install.sh | bash
+```
 
+## Installation (Manual)
 1. **Clone the repository**:
    ```bash
    git clone https://github.com/P0rtalPirate/ultraFiltrationSystem.git
