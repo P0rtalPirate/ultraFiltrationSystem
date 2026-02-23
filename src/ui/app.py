@@ -105,9 +105,9 @@ class App:
 
         # Show/hide back button based on frame
         if name == "main":
-            self._back_btn.config(state="disabled")
+            self._back_btn.pack_forget()
         else:
-            self._back_btn.config(state="normal")
+            self._back_btn.pack(side="left", padx=8, pady=6, fill="y")
 
         logger.debug("Showing frame: %s", name)
 
