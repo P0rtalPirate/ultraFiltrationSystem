@@ -10,7 +10,6 @@ venv/
 ENV/
 
 # Configuration
-.env
 timings.json
 
 # IDE
