@@ -14,7 +14,7 @@ sudo apt-get update
 sudo apt-get install -y python3-tk python3-pip python3-venv git \
                         python3-dev build-essential libpython3-dev patchelf \
                         xserver-xorg xinit openbox plymouth plymouth-themes zstd \
-                        xserver-xorg-legacy python3-rpi.gpio
+                        xserver-xorg-legacy python3-rpi.gpio unclutter
 
 # Configure X11 to allow non-console users to start X server
 echo "allowed_users=anybody" | sudo tee /etc/X11/Xwrapper.config
@@ -87,7 +87,24 @@ fi
 # Start X with Openbox
 echo "🖥️  Configuring Kiosk Mode..."
 mkdir -p ~/.config/openbox
+
+# Custom Openbox RC to hide window borders
+cat > ~/.config/openbox/rc.xml <<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<openbox_config>
+  <applications>
+    <application class="*">
+      <decor>no</decor>
+      <fullscreen>yes</fullscreen>
+    </application>
+  </applications>
+</openbox_config>
+EOF
+
 cat > ~/.config/openbox/autostart <<EOF
+# Hide cursor after 0 seconds of inactivity
+unclutter -idle 0 &
+
 # Start UltraFiltration Binary in Fullscreen
 $INSTALL_DIR/ultra-filt &
 EOF
@@ -113,7 +130,7 @@ WorkingDirectory=$INSTALL_DIR
 Environment=DISPLAY=:0
 Environment=XAUTHORITY=$HOME/.Xauthority
 ExecStartPre=/usr/bin/rm -f /tmp/.X0-lock
-ExecStart=/usr/bin/xinit /usr/bin/openbox-session -- :0 -nolisten tcp vt7
+ExecStart=/usr/bin/xinit /usr/bin/openbox-session -- :0 -nolisten tcp vt7 -nocursor
 Restart=always
 
 [Install]

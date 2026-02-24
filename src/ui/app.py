@@ -29,15 +29,24 @@ class App:
         # ── Tk root ──────────────────────────────────────────────────
         self.root = tk.Tk()
         self.root.title("UltraFiltration Control System")
-        self.root.geometry(f"{SCREEN_WIDTH}x{SCREEN_HEIGHT}")
+
+        # Get actual screen dimensions if fullscreen, otherwise use defaults
+        if IS_FULLSCREEN:
+            self.root.attributes("-fullscreen", True)
+            width = self.root.winfo_screenwidth()
+            height = self.root.winfo_screenheight()
+        else:
+            width = SCREEN_WIDTH
+            height = SCREEN_HEIGHT
+
+        self.root.geometry(f"{width}x{height}")
         self.root.configure(bg=Colors.BG_DARK)
         self.root.resizable(False, False)
 
-        if IS_FULLSCREEN:
-            self.root.attributes("-fullscreen", True)
-
         if not SHOW_CURSOR:
             self.root.config(cursor="none")
+            # Force cursor hiding on all frames
+            self.root.bind("<Motion>", lambda e: self.root.config(cursor="none"))
 
         # ── Theme ────────────────────────────────────────────────────
         self.style = apply_theme(self.root)
