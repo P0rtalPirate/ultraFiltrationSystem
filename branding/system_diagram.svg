@@ -1,57 +1,98 @@
-<svg width="650" height="400" viewBox="0 0 650 400" xmlns="http://www.w3.org/2000/svg">
+<svg width="650" height="420" viewBox="0 0 650 420" xmlns="http://www.w3.org/2000/svg">
     <!-- Background -->
-    <rect width="650" height="400" fill="#0a192f" rx="10"/>
+    <rect width="650" height="420" fill="#0a192f" rx="15"/>
     
-    <!-- Title -->
-    <text x="325" y="40" text-anchor="middle" font-family="Segoe UI, Arial" font-size="24" fill="#ffffff" font-weight="bold">SYSTEM PROCESS DIAGRAM</text>
-    <text x="325" y="65" text-anchor="middle" font-family="Segoe UI, Arial" font-size="14" fill="#64ffda">Raj Enterprices - Professional UF Control</text>
+    <!-- Title Area -->
+    <text x="325" y="35" text-anchor="middle" font-family="Segoe UI, Arial" font-size="22" fill="#ffffff" font-weight="bold">UF SYSTEM PROCESS SCHEMATIC</text>
+    <text x="325" y="55" text-anchor="middle" font-family="Segoe UI, Arial" font-size="14" fill="#64ffda">Raj Enterprices - Industrial Grade Control</text>
 
-    <!-- Main Flow Lines -->
-    <path d="M 50 200 L 120 200" stroke="#64ffda" stroke-width="4" fill="none" /> <!-- Inlet to P1 -->
-    <path d="M 160 200 L 250 200" stroke="#64ffda" stroke-width="4" fill="none" /> <!-- P1 to UF -->
-    <path d="M 350 200 L 500 200" stroke="#64ffda" stroke-width="4" fill="none" /> <!-- UF to Outlet -->
-    <path d="M 500 200 L 600 200" stroke="#64ffda" stroke-width="4" fill="none" /> <!-- Final Outlet -->
+    <!-- Define Symbols -->
+    <defs>
+        <!-- Valve Icon -->
+        <g id="valve">
+            <polygon points="0,0 16,10 0,10 16,0" fill="#f06292" stroke="#ffffff" stroke-width="1"/>
+            <rect x="7" y="0" width="2" height="4" fill="#ffffff"/>
+        </g>
+        <!-- Pump Icon -->
+        <g id="pump">
+            <circle cx="0" cy="0" r="15" fill="#4fc3f7" stroke="#ffffff" stroke-width="1.5"/>
+            <path d="M -8 -8 L 8 8 M -8 8 L 8 -8" stroke="#0a192f" stroke-width="2"/>
+        </g>
+        <!-- Tank Icon -->
+        <g id="tank">
+            <rect x="-30" y="0" width="60" height="50" fill="#112240" stroke="#8892b0" stroke-width="2" rx="5"/>
+            <ellipse cx="0" cy="0" rx="30" ry="8" fill="#1e3a8a" stroke="#8892b0" stroke-width="2"/>
+        </g>
+    </defs>
 
-    <!-- Drain/Waste Lines -->
-    <path d="M 130 200 L 130 300 L 50 300" stroke="#495670" stroke-width="3" fill="none" /> <!-- Drain line -->
-    <path d="M 300 150 L 300 100 L 450 100 L 450 200" stroke="#495670" stroke-width="3" fill="none" /> <!-- BW loop -->
-
-    <!-- UF Membrane Module -->
-    <rect x="250" y="140" width="100" height="120" rx="15" fill="#112240" stroke="#64ffda" stroke-width="2" />
-    <text x="300" y="205" text-anchor="middle" font-family="Arial" font-size="14" fill="#64ffda" font-weight="bold">UF MODULE</text>
-
-    <!-- Pumps -->
-    <circle cx="140" cy="200" r="20" fill="#4fc3f7" stroke="#ffffff" stroke-width="1.5" />
-    <text x="140" y="205" text-anchor="middle" font-family="Arial" font-size="12" fill="#0a192f" font-weight="bold">P1</text>
-    <text x="140" y="240" text-anchor="middle" font-family="Arial" font-size="10" fill="#8892b0">FEED PUMP</text>
-
-    <circle cx="380" cy="100" r="18" fill="#4fc3f7" stroke="#ffffff" stroke-width="1.5" />
-    <text x="380" y="105" text-anchor="middle" font-family="Arial" font-size="10" fill="#0a192f" font-weight="bold">P2</text>
-    <text x="380" y="80" text-anchor="middle" font-family="Arial" font-size="10" fill="#8892b0">BW PUMP</text>
-
-    <!-- Valves (V1-V5) -->
-    <!-- Valve drawing helper group -->
-    <g id="valve-icon" fill="#f06292" stroke="#ffffff" stroke-width="1">
-        <polygon points="0,0 20,20 0,20 20,0" />
+    <!-- Main Components -->
+    
+    <!-- DMF Storage (Bottom Left) -->
+    <g transform="translate(100, 330)">
+        <use href="#tank"/>
+        <text y="30" text-anchor="middle" font-family="Arial" font-size="10" fill="#ffffff" font-weight="bold">DMF STORAGE</text>
     </g>
 
-    <use href="#valve-icon" x="180" y="190" />
-    <text x="190" y="180" text-anchor="middle" font-family="Arial" font-size="12" fill="#ccd6f6" font-weight="bold">V1</text>
+    <!-- UF Storage Tank (Right) -->
+    <g transform="translate(540, 240)">
+        <use href="#tank" transform="scale(1.2)"/>
+        <text y="35" text-anchor="middle" font-family="Arial" font-size="10" fill="#ffffff" font-weight="bold">UF STORAGE</text>
+    </g>
 
-    <use href="#valve-icon" x="420" y="190" />
-    <text x="430" y="180" text-anchor="middle" font-family="Arial" font-size="12" fill="#ccd6f6" font-weight="bold">V2</text>
+    <!-- Drain (Bottom Right) -->
+    <g transform="translate(580, 350)">
+        <rect x="-25" y="0" width="50" height="30" rx="5" fill="#112240" stroke="#495670" stroke-width="2"/>
+        <text y="20" text-anchor="middle" font-family="Arial" font-size="10" fill="#8892b0">DRAIN</text>
+    </g>
 
-    <use href="#valve-icon" x="120" y="240" />
-    <text x="105" y="265" text-anchor="middle" font-family="Arial" font-size="12" fill="#ccd6f6" font-weight="bold">V3</text>
+    <!-- UF Module (Center) -->
+    <g transform="translate(325, 120)">
+        <rect x="-35" y="0" width="70" height="180" rx="10" fill="#112240" stroke="#64ffda" stroke-width="3"/>
+        <text x="0" y="95" text-anchor="middle" font-family="Arial" font-size="18" fill="#64ffda" font-weight="bold">UF</text>
+        <ellipse cx="0" cy="0" rx="35" ry="10" fill="#1e3a8a" stroke="#64ffda" stroke-width="2"/>
+        <ellipse cx="0" cy="180" rx="35" ry="10" fill="#1e3a8a" stroke="#64ffda" stroke-width="2"/>
+    </g>
 
-    <use href="#valve-icon" x="290" y="90" />
-    <text x="325" y="105" text-anchor="middle" font-family="Arial" font-size="12" fill="#ccd6f6" font-weight="bold">V4</text>
+    <!-- Flow Lines & Valves -->
 
-    <use href="#valve-icon" x="490" y="190" />
-    <text x="500" y="235" text-anchor="middle" font-family="Arial" font-size="12" fill="#ccd6f6" font-weight="bold">V5</text>
+    <!-- PP1 Feed Path -->
+    <line x1="130" y1="355" x2="170" y2="355" stroke="#64ffda" stroke-width="3"/> <!-- From Tank to Pump -->
+    <use href="#pump" x="170" y="355"/>
+    <text x="170" y="385" text-anchor="middle" font-family="Arial" font-size="10" fill="#64ffda">PP1</text>
 
-    <!-- Process Labels -->
-    <text x="50" y="180" font-family="Arial" font-size="11" fill="#8892b0">RAW WATER IN</text>
-    <text x="600" y="180" text-anchor="end" font-family="Arial" font-size="11" fill="#8892b0">SERVICE OUT</text>
-    <text x="50" y="290" font-family="Arial" font-size="11" fill="#8892b0">DRAINAGE</text>
+    <!-- Path from PP1 split -->
+    <path d="M 185 355 L 290 355" stroke="#64ffda" stroke-width="3" fill="none"/> <!-- Horizontal to UF -->
+    <use href="#valve" x="230" y="350"/>
+    <text x="238" y="340" text-anchor="middle" font-family="Arial" font-size="11" fill="#ffffff" font-weight="bold">V1</text>
+
+    <!-- V2 Vertical Path -->
+    <path d="M 210 355 L 210 120 L 290 120" stroke="#64ffda" stroke-width="3" fill="none"/>
+    <use href="#valve" x="202" y="240" transform="rotate(-90, 210, 245)"/>
+    <text x="190" y="245" text-anchor="end" font-family="Arial" font-size="11" fill="#ffffff" font-weight="bold">V2</text>
+
+    <!-- UF Bottom Exit Split -->
+    <path d="M 325 310 L 325 355 L 555 355" stroke="#64ffda" stroke-width="3" fill="none"/>
+    <use href="#valve" x="420" y="350"/>
+    <text x="428" y="340" text-anchor="middle" font-family="Arial" font-size="11" fill="#ffffff" font-weight="bold">V3</text>
+
+    <!-- V4 Path to UF Storage -->
+    <path d="M 480 355 L 480 270 L 505 270" stroke="#64ffda" stroke-width="3" fill="none"/>
+    <use href="#valve" x="472" y="310" transform="rotate(-90, 480, 315)"/>
+    <text x="495" y="315" text-anchor="start" font-family="Arial" font-size="11" fill="#ffffff" font-weight="bold">V4</text>
+
+    <!-- UF Top Exit Path -->
+    <path d="M 325 100 L 325 80 L 540 80 L 540 230" stroke="#64ffda" stroke-width="3" fill="none"/>
+    <use href="#valve" x="480" y="75"/>
+    <text x="488" y="70" text-anchor="middle" font-family="Arial" font-size="11" fill="#ffffff" font-weight="bold">V5</text>
+
+    <!-- PP2 Backwash Path -->
+    <path d="M 575 270 L 610 270 L 610 80 L 540 80" stroke="#4fc3f7" stroke-width="2" fill="none" stroke-dasharray="5,2"/>
+    <use href="#pump" x="610" y="160" transform="rotate(-90, 610, 160)"/>
+    <text x="635" y="165" text-anchor="start" font-family="Arial" font-size="10" fill="#4fc3f7">PP2</text>
+
+    <!-- Labels for Connections -->
+    <text x="70" y="380" font-family="Arial" font-size="9" fill="#8892b0" text-anchor="middle">FEED IN</text>
+    <text x="580" y="395" font-family="Arial" font-size="9" fill="#8892b0" text-anchor="middle">WASTE</text>
+    <text x="540" y="305" font-family="Arial" font-size="9" fill="#8892b0" text-anchor="middle">PRODUCT</text>
+
 </svg>
