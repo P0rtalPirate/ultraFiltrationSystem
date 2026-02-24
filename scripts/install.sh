@@ -14,7 +14,7 @@ sudo apt-get update
 sudo apt-get install -y python3-tk python3-pip python3-venv git \
                         python3-dev build-essential libpython3-dev patchelf \
                         xserver-xorg xinit openbox plymouth plymouth-themes zstd \
-                        xserver-xorg-legacy
+                        xserver-xorg-legacy python3-rpi.gpio
 
 # Configure X11 to allow non-console users to start X server
 echo "allowed_users=anybody" | sudo tee /etc/X11/Xwrapper.config
