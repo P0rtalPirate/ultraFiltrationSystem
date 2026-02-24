@@ -13,7 +13,10 @@ echo "📦 Installing system dependencies..."
 sudo apt-get update
 sudo apt-get install -y python3-tk python3-pip python3-venv git \
                         python3-dev build-essential libpython3-dev patchelf \
-                        xserver-xorg xinit openbox plymouth plymouth-themes
+                        xserver-xorg xinit openbox plymouth plymouth-themes zstd
+
+# Add user to video and input groups for X11/GUI access
+sudo usermod -a -G video,input $(whoami)
 
 # 2. Clone or Restore repository
 INSTALL_DIR="$HOME/ultraFiltrationSystem"
@@ -34,7 +37,7 @@ echo "🐍 Preparing environment..."
 python3 -m venv venv
 source venv/bin/activate
 pip install --upgrade pip
-pip install . ordered-set nuitka  # nuitka and deps for building
+pip install . ordered-set nuitka zstandard  # nuitka and deps for building
 
 # 4. Branded Splash Screen Setup (Optional/Placeholder)
 echo "🎨 Configuring Branding (Raj Enterprices)..."
@@ -77,12 +80,17 @@ UF_LOG_LEVEL=INFO
 EOF
 fi
 
-# 8. Configure Minimal GUI (Openbox) to launch binary
+# Start X with Openbox
 echo "🖥️  Configuring Kiosk Mode..."
 mkdir -p ~/.config/openbox
 cat > ~/.config/openbox/autostart <<EOF
 # Start UltraFiltration Binary in Fullscreen
 $INSTALL_DIR/ultra-filt &
+EOF
+
+# Create .xinitrc for startx/xinit fallback
+cat > ~/.xinitrc <<EOF
+exec openbox-session
 EOF
 
 # 9. Install Systemd Service for Bootup
@@ -92,23 +100,26 @@ SERVICE_FILE="/etc/systemd/system/ultrafiltration.service"
 sudo bash -c "cat > $SERVICE_FILE" <<EOF
 [Unit]
 Description=UltraFiltration Control System (Raj Enterprices)
-After=graphical.target
+After=network.target
 
 [Service]
+Type=simple
+User=$(whoami)
+WorkingDirectory=$INSTALL_DIR
 Environment=DISPLAY=:0
 Environment=XAUTHORITY=$HOME/.Xauthority
-WorkingDirectory=$INSTALL_DIR
-ExecStart=/usr/bin/startx
+ExecStartPre=/usr/bin/rm -f /tmp/.X0-lock
+ExecStart=/usr/bin/xinit /usr/bin/openbox-session -- :0 -nolisten tcp vt7
 Restart=always
-User=$(whoami)
 
 [Install]
-WantedBy=graphical.target
+WantedBy=multi-user.target
 EOF
 
-# 10. Enable service
+# 10. Enable and Start service
 sudo systemctl daemon-reload
 sudo systemctl enable ultrafiltration.service
+sudo systemctl start ultrafiltration.service
 
 echo ""
 echo "✅ Deployment Complete!"
