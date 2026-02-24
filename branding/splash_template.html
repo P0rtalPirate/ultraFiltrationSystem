@@ -25,11 +25,11 @@
 
         .header {
             text-align: center;
-            margin-top: 40px;
+            margin-top: 30px;
         }
 
         h1 {
-            font-size: 48px;
+            font-size: 42px;
             margin: 0;
             font-weight: 800;
             letter-spacing: 4px;
@@ -38,7 +38,7 @@
         }
 
         h2 {
-            font-size: 22px;
+            font-size: 18px;
             margin: 5px 0 0 0;
             color: #64ffda;
             font-weight: 400;
@@ -54,8 +54,8 @@
         }
 
         .footer {
-            margin-bottom: 35px;
-            font-size: 20px;
+            margin-bottom: 25px;
+            font-size: 18px;
             color: #8892b0;
             font-weight: 500;
         }
@@ -113,57 +113,73 @@
     </div>
 
     <div class="diagram-container">
-        <svg width="600" height="280" viewBox="0 0 600 280">
-            <!-- Symbols Definitions -->
+        <svg width="650" height="300" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid meet">
+            <!-- Reuse Symbol Logic from system_diagram.svg -->
             <defs>
                 <g id="v-sym">
-                    <polygon points="0,0 18,10 0,10 18,0" class="v-box" />
+                    <polygon points="0,0 20,10 0,20 20,0" class="v-box" />
                 </g>
                 <g id="p-sym">
-                    <circle cx="0" cy="0" r="16" class="p-box" />
+                    <circle cx="0" cy="0" r="18" class="p-box" />
                     <path d="M -8 -8 L 8 8 M -8 8 L 8 -8" stroke="#0a192f" stroke-width="2" />
+                </g>
+                <g id="t-sym">
+                    <rect x="-40" y="0" width="80" height="50" class="node" rx="5" />
+                    <ellipse cx="0" cy="0" rx="40" ry="8" style="fill:#1e3a8a; stroke:#8892b0; stroke-width:2" />
                 </g>
             </defs>
 
             <!-- UF Vessel -->
-            <rect x="260" y="60" width="80" height="160" rx="10" class="node" />
-            <text x="300" y="145" text-anchor="middle" class="lbl" style="font-size: 18px; fill: #64ffda;">UF</text>
+            <g transform="translate(400, 100)">
+                <rect x="-40" y="0" width="80" height="180" rx="15" class="node" />
+                <text x="0" y="100" text-anchor="middle" class="lbl" style="font-size: 18px; fill: #64ffda;">UF</text>
+                <ellipse cx="0" cy="0" rx="40" ry="12" style="fill:#1e3a8a; stroke:#64ffda; stroke-width:2" />
+                <ellipse cx="0" cy="180" rx="40" ry="12" style="fill:#1e3a8a; stroke:#64ffda; stroke-width:2" />
+            </g>
 
-            <!-- PP1 Path (Feed) -->
-            <path d="M 40 230 L 100 230" class="p-main" />
-            <use href="#p-sym" x="120" y="230" />
-            <text x="120" y="260" text-anchor="middle" class="sub-lbl">PP1</text>
+            <!-- Feed Path (PP1) -->
+            <g transform="translate(150, 320)">
+                <use href="#t-sym" />
+                <text y="35" text-anchor="middle" class="sub-lbl">DMF STORAGE</text>
+            </g>
+            <path d="M 150 320 L 150 300 L 80 300" class="p-main" />
+            <use href="#p-sym" x="80" y="300" />
+            <text x="80" y="340" text-anchor="middle" class="sub-lbl">PP1</text>
 
-            <!-- Feed Split -->
-            <path d="M 136 230 L 260 230" class="p-main" /> <!-- To Bottom -->
-            <use href="#v-sym" x="200" y="225" />
-            <text x="210" y="220" text-anchor="middle" class="lbl">V1</text>
+            <path d="M 80 300 L 250 300" class="p-main" />
 
-            <path d="M 170 230 L 170 60 L 260 60" class="p-main" /> <!-- To Top -->
-            <use href="#v-sym" x="161" y="140" transform="rotate(-90, 170, 145)" />
-            <text x="155" y="145" text-anchor="end" class="lbl">V2</text>
+            <!-- V1 to Bottom -->
+            <path d="M 250 300 L 400 300 L 400 285" class="p-main" />
+            <use href="#v-sym" x="300" y="290" />
+            <text x="310" y="280" text-anchor="middle" class="lbl">V1</text>
 
-            <!-- Pipe Exits -->
-            <path d="M 340 230 L 520 230" class="p-main" /> <!-- Bottom Exit Main -->
-            <use href="#v-sym" x="380" y="225" />
-            <text x="390" y="220" text-anchor="middle" class="lbl">V3</text>
-            <text x="560" y="235" text-anchor="middle" class="sub-lbl">DRAIN</text>
+            <!-- V2 to Top -->
+            <path d="M 250 300 L 250 140 L 580 140" class="p-main" />
+            <use href="#v-sym" x="240" y="210" transform="rotate(-90, 250, 220)" />
+            <text x="230" y="220" text-anchor="end" class="lbl">V2</text>
 
-            <!-- V4 Bypass to Top -->
-            <path d="M 450 230 L 450 40" class="p-main" />
-            <use href="#v-sym" x="441" y="160" transform="rotate(-90, 450, 165)" />
-            <text x="465" y="165" text-anchor="start" class="lbl">V4</text>
+            <!-- Bottom Exit (V3) -->
+            <path d="M 400 285 L 400 300 L 640 300 L 640 350" class="p-main" />
+            <use href="#v-sym" x="500" y="290" />
+            <text x="510" y="280" text-anchor="middle" class="lbl">V3</text>
+            <text x="640" y="380" text-anchor="middle" class="sub-lbl">DRAIN</text>
 
-            <!-- Top Manifold -->
-            <path d="M 300 60 L 300 40 L 520 40 L 520 180" class="p-main" />
-            <use href="#v-sym" x="480" y="35" />
-            <text x="490" y="30" text-anchor="middle" class="lbl">V5</text>
-            <text x="520" y="210" text-anchor="middle" class="sub-lbl">STORAGE</text>
+            <!-- V4 Bypass -->
+            <path d="M 580 300 L 580 140" class="p-main" />
+            <use href="#v-sym" x="571" y="240" transform="rotate(-90, 580, 250)" />
+            <text x="595" y="250" text-anchor="start" class="lbl">V4</text>
 
-            <!-- PP2 Path (Backwash) -->
-            <path d="M 520 180 L 580 180 L 580 40 L 450 40" class="p-sec" />
-            <use href="#p-sym" x="580" y="110" transform="rotate(-90, 580, 110)" />
-            <text x="595" y="115" text-anchor="start" class="sub-lbl" style="fill:#4fc3f7">PP2</text>
+            <!-- Top Manifold & V5 -->
+            <path d="M 400 90 L 400 60 L 700 60 L 700 180" class="p-main" />
+            <use href="#v-sym" x="630" y="50" />
+            <text x="640" y="40" text-anchor="middle" class="lbl">V5</text>
+            <text x="700" y="210" text-anchor="middle" class="sub-lbl">STORAGE</text>
+            <path d="M 580 140 L 580 60" class="p-main" />
+
+            <!-- PP2 (Backwash) -->
+            <path d="M 700 230 L 620 230 L 620 60" class="p-sec" />
+            <use href="#p-sym" x="620" y="160" transform="rotate(-90, 620, 160)" />
+            <text x="645" y="165" text-anchor="start" class="sub-lbl" style="fill:#4fc3f7">PP2</text>
 
         </svg>
     </div>
