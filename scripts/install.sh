@@ -56,6 +56,7 @@ if [ -f "ultra-filt" ]; then
     rm -rf src/
     rm -f pyproject.toml requirements.txt .gitignore README.md HARDWARE.md
     rm -rf .git/
+    rm -rf *.build/ *.dist/ *.onefile-build/
 else
     echo "❌ Compilation failed. Keeping source code for safety."
 fi
