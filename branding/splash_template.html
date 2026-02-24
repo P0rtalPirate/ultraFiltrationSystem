@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=800, height=480">
@@ -21,10 +22,12 @@
             border: 4px solid #112240;
             box-sizing: border-box;
         }
+
         .header {
             text-align: center;
             margin-top: 40px;
         }
+
         h1 {
             font-size: 48px;
             margin: 0;
@@ -32,8 +35,8 @@
             letter-spacing: 4px;
             color: #ffffff;
             text-transform: uppercase;
-            text-shadow: 0 4px 10px rgba(0,0,0,0.5);
         }
+
         h2 {
             font-size: 22px;
             margin: 5px 0 0 0;
@@ -41,6 +44,7 @@
             font-weight: 400;
             letter-spacing: 2px;
         }
+
         .diagram-container {
             width: 100%;
             flex-grow: 1;
@@ -48,85 +52,125 @@
             align-items: center;
             justify-content: center;
         }
+
         .footer {
             margin-bottom: 35px;
             font-size: 20px;
             color: #8892b0;
             font-weight: 500;
-            letter-spacing: 1px;
         }
+
         /* SVG Styling */
-        .pipe { stroke: #64ffda; stroke-width: 4; fill: none; stroke-linecap: round; }
-        .pipe-secondary { stroke: #4fc3f7; stroke-width: 3; fill: none; stroke-dasharray: 6,3; }
-        .component-body { fill: #112240; stroke: #64ffda; stroke-width: 2.5; }
-        .valve-body { fill: #f06292; stroke: #ffffff; stroke-width: 1.5; }
-        .pump-body { fill: #4fc3f7; stroke: #ffffff; stroke-width: 1.5; }
-        .text-label { font-size: 13px; fill: #ccd6f6; font-weight: bold; }
-        .text-sub { font-size: 11px; fill: #8892b0; font-weight: bold; }
+        .p-main {
+            stroke: #64ffda;
+            stroke-width: 4;
+            fill: none;
+        }
+
+        .p-sec {
+            stroke: #4fc3f7;
+            stroke-width: 3;
+            fill: none;
+            stroke-dasharray: 6, 3;
+        }
+
+        .node {
+            fill: #112240;
+            stroke: #64ffda;
+            stroke-width: 2.5;
+        }
+
+        .v-box {
+            fill: #f06292;
+            stroke: #ffffff;
+            stroke-width: 1.5;
+        }
+
+        .p-box {
+            fill: #4fc3f7;
+            stroke: #ffffff;
+            stroke-width: 1.5;
+        }
+
+        .lbl {
+            font-size: 13px;
+            fill: #ccd6f6;
+            font-weight: bold;
+        }
+
+        .sub-lbl {
+            font-size: 11px;
+            fill: #8892b0;
+            font-weight: bold;
+        }
     </style>
 </head>
+
 <body>
     <div class="header">
         <h1>Raj Enterprices</h1>
         <h2>UltraFiltration Control System</h2>
     </div>
-    
+
     <div class="diagram-container">
         <svg width="600" height="280" viewBox="0 0 600 280">
             <!-- Symbols Definitions -->
             <defs>
-                <g id="v-icon">
-                    <polygon points="0,0 18,10 0,10 18,0" class="valve-body" />
+                <g id="v-sym">
+                    <polygon points="0,0 18,10 0,10 18,0" class="v-box" />
                 </g>
-                <g id="p-icon">
-                    <circle cx="0" cy="0" r="16" class="pump-body" />
-                    <path d="M -8 -8 L 8 8 M -8 8 L 8 -8" stroke="#0a192f" stroke-width="2"/>
+                <g id="p-sym">
+                    <circle cx="0" cy="0" r="16" class="p-box" />
+                    <path d="M -8 -8 L 8 8 M -8 8 L 8 -8" stroke="#0a192f" stroke-width="2" />
                 </g>
             </defs>
 
-            <!-- UF Module -->
-            <rect x="260" y="60" width="80" height="160" rx="10" class="component-body" />
-            <text x="300" y="145" text-anchor="middle" class="text-label" style="font-size: 18px; fill: #64ffda;">UF</text>
+            <!-- UF Vessel -->
+            <rect x="260" y="60" width="80" height="160" rx="10" class="node" />
+            <text x="300" y="145" text-anchor="middle" class="lbl" style="font-size: 18px; fill: #64ffda;">UF</text>
 
-            <!-- Connections -->
-            <!-- PP1 Path -->
-            <path d="M 50 240 L 120 240" class="pipe" />
-            <use href="#p-icon" x="140" y="240" />
-            <text x="140" y="270" text-anchor="middle" class="text-sub" style="fill:#4fc3f7">PP1</text>
+            <!-- PP1 Path (Feed) -->
+            <path d="M 40 230 L 100 230" class="p-main" />
+            <use href="#p-sym" x="120" y="230" />
+            <text x="120" y="260" text-anchor="middle" class="sub-lbl">PP1</text>
 
-            <path d="M 156 240 L 260 240" class="pipe" /> <!-- To Bottom -->
-            <use href="#v-icon" x="195" y="235" />
-            <text x="204" y="230" text-anchor="middle" class="text-label">V1</text>
+            <!-- Feed Split -->
+            <path d="M 136 230 L 260 230" class="p-main" /> <!-- To Bottom -->
+            <use href="#v-sym" x="200" y="225" />
+            <text x="210" y="220" text-anchor="middle" class="lbl">V1</text>
 
-            <path d="M 180 240 L 180 60 L 260 60" class="pipe" /> <!-- To Top -->
-            <use href="#v-icon" x="171" y="150" transform="rotate(-90, 180, 155)" />
-            <text x="165" y="155" text-anchor="end" class="text-label">V2</text>
+            <path d="M 170 230 L 170 60 L 260 60" class="p-main" /> <!-- To Top -->
+            <use href="#v-sym" x="161" y="140" transform="rotate(-90, 170, 145)" />
+            <text x="155" y="145" text-anchor="end" class="lbl">V2</text>
 
-            <!-- Exit Paths -->
-            <path d="M 340 240 L 550 240" class="pipe" /> <!-- Bottom Exit -->
-            <use href="#v-icon" x="400" y="235" />
-            <text x="409" y="230" text-anchor="middle" class="text-label">V3</text>
-            <text x="550" y="260" text-anchor="middle" class="text-sub">DRAIN</text>
+            <!-- Pipe Exits -->
+            <path d="M 340 230 L 520 230" class="p-main" /> <!-- Bottom Exit Main -->
+            <use href="#v-sym" x="380" y="225" />
+            <text x="390" y="220" text-anchor="middle" class="lbl">V3</text>
+            <text x="560" y="235" text-anchor="middle" class="sub-lbl">DRAIN</text>
 
-            <path d="M 450 240 L 450 180 L 500 180" class="pipe" /> <!-- To Storage -->
-            <use href="#v-icon" x="441" y="210" transform="rotate(-90, 450, 215)" />
-            <text x="465" y="215" text-anchor="start" class="text-label">V4</text>
-            <text x="530" y="200" text-anchor="middle" class="text-sub">UF STORAGE</text>
+            <!-- V4 Bypass to Top -->
+            <path d="M 450 230 L 450 40" class="p-main" />
+            <use href="#v-sym" x="441" y="160" transform="rotate(-90, 450, 165)" />
+            <text x="465" y="165" text-anchor="start" class="lbl">V4</text>
 
-            <path d="M 340 60 L 520 60 L 520 170" class="pipe" /> <!-- Top Exit -->
-            <use href="#v-icon" x="410" y="55" />
-            <text x="419" y="50" text-anchor="middle" class="text-label">V5</text>
+            <!-- Top Manifold -->
+            <path d="M 300 60 L 300 40 L 520 40 L 520 180" class="p-main" />
+            <use href="#v-sym" x="480" y="35" />
+            <text x="490" y="30" text-anchor="middle" class="lbl">V5</text>
+            <text x="520" y="210" text-anchor="middle" class="sub-lbl">STORAGE</text>
 
-            <!-- PP2 Path -->
-            <path d="M 540 180 L 580 180 L 580 60 L 520 60" class="pipe-secondary" />
-            <use href="#p-icon" x="580" y="120" transform="rotate(-90, 580, 120)" />
-            <text x="595" y="125" text-anchor="start" class="text-sub" style="fill:#4fc3f7">PP2</text>
+            <!-- PP2 Path (Backwash) -->
+            <path d="M 520 180 L 580 180 L 580 40 L 450 40" class="p-sec" />
+            <use href="#p-sym" x="580" y="110" transform="rotate(-90, 580, 110)" />
+            <text x="595" y="115" text-anchor="start" class="sub-lbl" style="fill:#4fc3f7">PP2</text>
 
         </svg>
     </div>
 
     <div class="footer">
-        Support Contact: +91 91119 55502
+        Support: +91 91119 55502
     </div>
 </body>
+
 </html>
