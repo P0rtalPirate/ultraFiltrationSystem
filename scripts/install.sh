@@ -12,7 +12,7 @@ echo "🚀 Starting Advanced UltraFiltration Setup (Raj Enterprices)..."
 echo "📦 Installing system dependencies..."
 sudo apt-get update
 sudo apt-get install -y python3-tk python3-pip python3-venv git \
-                        python3-dev build-essential libpython3-dev \
+                        python3-dev build-essential libpython3-dev patchelf \
                         xserver-xorg xinit openbox plymouth plymouth-themes
 
 # 2. Clone repository
