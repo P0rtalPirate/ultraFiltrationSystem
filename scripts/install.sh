@@ -15,10 +15,15 @@ sudo apt-get install -y python3-tk python3-pip python3-venv git \
                         python3-dev build-essential libpython3-dev patchelf \
                         xserver-xorg xinit openbox plymouth plymouth-themes
 
-# 2. Clone repository
+# 2. Clone or Restore repository
 INSTALL_DIR="$HOME/ultraFiltrationSystem"
-if [ ! -d "$INSTALL_DIR" ]; then
-    echo "📂 Cloning repository..."
+if [ ! -d "$INSTALL_DIR/.git" ] && [ ! -d "$INSTALL_DIR/src" ]; then
+    echo "📂 Source missing or wiped. (Re)Cloning repository..."
+    # If directory exists but no .git, we might be in a wiped state. 
+    # Move existing files to a temp area to avoid git clone conflicts
+    if [ -d "$INSTALL_DIR" ]; then
+        mv "$INSTALL_DIR" "${INSTALL_DIR}_backup_$(date +%s)"
+    fi
     git clone https://github.com/P0rtalPirate/ultraFiltrationSystem.git "$INSTALL_DIR"
 fi
 
