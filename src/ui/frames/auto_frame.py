@@ -6,12 +6,16 @@ Between processes the bar fills back up.
 Includes a persistent toggle button (bottom-right) that swaps the valve/pump
 card grid with the live system diagram SVG. The preference is stored in
 .uf_prefs.json and survives Pi reboots.
+
+Fallback: If cairosvg fails (common on Windows without Cairo DLLs), 
+a native Tkinter SVG-to-Canvas renderer is used.
 """
 
 import tkinter as tk
 from tkinter import ttk
 from pathlib import Path
 import re
+import xml.etree.ElementTree as ET
 
 from src.config import VALVE_LABELS, get_svg_view_pref, set_svg_view_pref
 from src.ui.theme import Colors, Fonts
@@ -220,10 +224,13 @@ class RoundedProgressBar(tk.Canvas):
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-#  SVG Diagram Canvas
+#  SVG Diagram Canvas (with Native Fallback)
 # ─────────────────────────────────────────────────────────────────────────────
 class SvgDiagramCanvas(tk.Canvas):
-    """Renders the system_diagram.svg as a live image inside a canvas."""
+    """
+    Renders the system_diagram.svg inside a canvas.
+    Tries cairosvg first. If it fails, uses a native Tkinter renderer.
+    """
 
     def __init__(self, parent, **kwargs):
         super().__init__(
@@ -232,27 +239,16 @@ class SvgDiagramCanvas(tk.Canvas):
         self._photo = None
         self._states = {i: False for i in range(1, 8)} # Channels 1-7
         self._template_xml = ""
+        self._use_fallback = False
         
         # Load the base SVG template
         try:
             with open(_SVG_PATH, "r") as f:
                 self._template_xml = f.read()
-            
-            # Inject CSS style block into <defs> (or at the start)
-            style_block = """
-<style>
-  .on rect, .on circle, .on ellipse { fill: #00ff88 !important; filter: url(#gl); }
-  .on text { fill: #ffffff !important; }
-</style>"""
-            if "<defs>" in self._template_xml:
-                self._template_xml = self._template_xml.replace("<defs>", f"<defs>{style_block}", 1)
-            else:
-                self._template_xml = self._template_xml.replace("<svg ", f"<svg>{style_block}", 1)
-
         except Exception:
             self._template_xml = ""
 
-        self._refresh_photo()
+        self._refresh_display()
         self.bind("<Configure>", self._on_resize)
 
     def update_state(self, channel_id: int, is_on: bool):
@@ -260,47 +256,184 @@ class SvgDiagramCanvas(tk.Canvas):
         if self._states.get(channel_id) == is_on:
             return
         self._states[channel_id] = is_on
-        self._refresh_photo()
+        self._refresh_display()
         self._on_resize(None)
 
-    def _refresh_photo(self):
-        """Re-render the SVG based on current states."""
+    def _refresh_display(self):
+        """Attempts to render using cairosvg, falls back to native Tkinter if needed."""
         if not self._template_xml:
             return
 
-        try:
-            import cairosvg
-            from PIL import Image, ImageTk
-            import io
+        # Prepare state-augmented XML
+        xml = self._template_xml
+        style_block = """
+<style>
+  .on rect, .on circle, .on ellipse { fill: #00ff88 !important; }
+  .on text { fill: #ffffff !important; }
+</style>"""
+        if "<defs>" in xml:
+            xml = xml.replace("<defs>", f"<defs>{style_block}", 1)
+        else:
+            xml = xml.replace("<svg ", f"<svg>{style_block}", 1)
 
-            # Apply states to XML
-            xml = self._template_xml
-            for cid, on in self._states.items():
-                if on:
-                    # Target v_1 to v_5, or p_6, p_7
-                    tag_id = f"v_{cid}" if cid <= 5 else f"p_{cid}"
-                    # Match <g id="v_1" and replace with <g id="v_1" class="on"
-                    pattern = rf'(id="{tag_id}")'
-                    xml = re.sub(pattern, r'\1 class="on"', xml)
+        for cid, on in self._states.items():
+            if on:
+                tag_id = f"v_{cid}" if cid <= 5 else f"p_{cid}"
+                xml = xml.replace(f'id="{tag_id}"', f'id="{tag_id}" class="on"')
 
-            png_data = cairosvg.svg2png(bytestring=xml.encode("utf-8"), output_width=760, output_height=300)
-            img = Image.open(io.BytesIO(png_data))
-            self._photo = ImageTk.PhotoImage(img)
-        except Exception:
-            self._photo = None
+        # Try cairosvg
+        if not self._use_fallback:
+            try:
+                import cairosvg
+                from PIL import Image, ImageTk
+                import io
+                png_data = cairosvg.svg2png(bytestring=xml.encode("utf-8"), output_width=760, output_height=300)
+                img = Image.open(io.BytesIO(png_data))
+                self._photo = ImageTk.PhotoImage(img)
+                return
+            except Exception:
+                # First fail? Enable fallback from now on
+                self._use_fallback = True
+        
+        # Native Fallback
+        self._photo = None # Clear image so native renderer redraws paths
 
     def _on_resize(self, event):
         self.delete("all")
         w = event.width if event else self.winfo_width()
         h = event.height if event else self.winfo_height()
+        
         if self._photo:
+            # Show cairosvg image
             self.create_image(w // 2, h // 2, anchor="center", image=self._photo)
+        elif self._template_xml:
+            # Show Native Tkinter rendering
+            self._render_native(w, h)
         else:
             self.create_text(
                 w // 2, h // 2,
-                text="⚙  System Diagram\n(render error or missing dependencies)",
+                text="⚙  System Diagram\n(Missing file: branding/system_diagram.svg)",
                 fill=Colors.TEXT_MUTED, font=Fonts.BODY_BOLD,
                 justify="center", anchor="center"
+            )
+
+    def _render_native(self, canvas_w, canvas_h):
+        """A simple SVG parser that draws basic shapes directly on Tkinter Canvas."""
+        try:
+            # Scale factor (SVG is 900x560, canvas target is ~760x300)
+            # We preserve aspect ratio and center it
+            svg_w, svg_h = 900, 560
+            scale = min(canvas_w / svg_w, canvas_h / svg_h) * 1.1 # slightly bigger
+            ox = (canvas_w - svg_w * scale) / 2
+            oy = (canvas_h - svg_h * scale) / 2
+
+            # Basic XML parsing (stripping namespaces for simplicity)
+            clean_xml = re.sub(r'xmlns="[^"]+"', '', self._template_xml)
+            root = ET.fromstring(clean_xml)
+
+            def get_attr(el, attr, default=""):
+                return el.get(attr, default)
+
+            def parse_val(v):
+                try: 
+                    return float(v) 
+                except: 
+                    return 0
+
+            def get_color(el, current_cid=None):
+                # Check if this element belongs to an active channel
+                parent_id = el.get("id", "")
+                is_on = False
+                if current_cid is not None:
+                    is_on = self._states.get(current_cid, False)
+                elif parent_id.startswith("v_") or parent_id.startswith("p_"):
+                    try: is_on = self._states.get(int(parent_id.split("_")[1]), False)
+                    except: pass
+                
+                if is_on: return "#00ff88"
+                
+                fill = get_attr(el, "fill")
+                if "url(" in fill: return "#1a4272" # dummy for gradients
+                if not fill or fill == "none": return ""
+                return fill
+
+            def process_node(node, tx=0, ty=0, cid=None):
+                # Handle group transforms
+                local_tx, local_ty = tx, ty
+                local_cid = cid
+                
+                trans = get_attr(node, "transform")
+                if "translate" in trans:
+                    m = re.search(r'translate\(([^,)]+),?([^)]+)?\)', trans)
+                    if m:
+                        local_tx += parse_val(m.group(1))
+                        local_ty += parse_val(m.group(2) or 0)
+                
+                # Check for ID (valves/pumps)
+                node_id = get_attr(node, "id")
+                if node_id.startswith("v_") or node_id.startswith("p_"):
+                    try: local_cid = int(node_id.split("_")[1])
+                    except: pass
+
+                tag = node.tag
+                if tag == "rect":
+                    x = (parse_val(get_attr(node, "x")) + local_tx) * scale + ox
+                    y = (parse_val(get_attr(node, "y")) + local_ty) * scale + oy
+                    w = parse_val(get_attr(node, "width")) * scale
+                    h = parse_val(get_attr(node, "height")) * scale
+                    color = get_color(node, local_cid)
+                    if color:
+                        self.create_rectangle(x, y, x+w, y+h, fill=color, outline="", width=0)
+                
+                elif tag == "circle":
+                    cx = (parse_val(get_attr(node, "cx")) + local_tx) * scale + ox
+                    cy = (parse_val(get_attr(node, "cy")) + local_ty) * scale + oy
+                    r = parse_val(get_attr(node, "r")) * scale
+                    color = get_color(node, local_cid)
+                    if color:
+                        self.create_oval(cx-r, cy-r, cx+r, cy+r, fill=color, outline="", width=0)
+
+                elif tag == "ellipse":
+                    cx = (parse_val(get_attr(node, "cx")) + local_tx) * scale + ox
+                    cy = (parse_val(get_attr(node, "cy")) + local_ty) * scale + oy
+                    rx = parse_val(get_attr(node, "rx")) * scale
+                    ry = parse_val(get_attr(node, "ry")) * scale
+                    color = get_color(node, local_cid)
+                    if color:
+                        self.create_oval(cx-rx, cy-ry, cx+rx, cy+ry, fill=color, outline="", width=0)
+
+                elif tag == "polygon":
+                    points_str = get_attr(node, "points")
+                    coords = []
+                    for pair in points_str.strip().split():
+                        px, py = map(parse_val, pair.split(","))
+                        coords.append((px + local_tx) * scale + ox)
+                        coords.append((py + local_ty) * scale + oy)
+                    color = get_color(node, local_cid)
+                    if color:
+                        self.create_polygon(coords, fill=color, outline="", width=0)
+
+                elif tag == "text":
+                    tx_x = (parse_val(get_attr(node, "x")) + local_tx) * scale + ox
+                    tx_y = (parse_val(get_attr(node, "y")) + local_ty) * scale + oy
+                    font_size = max(6, int(parse_val(get_attr(node, "font-size", "12")) * scale * 0.8))
+                    color = "#ffffff" if local_cid and self._states.get(local_cid) else get_attr(node, "fill") or "#c0d8f0"
+                    self.create_text(tx_x, tx_y, text=node.text, fill=color, font=("Segoe UI", font_size, "bold"))
+
+                # Recurse
+                for child in node:
+                    process_node(child, local_tx, local_ty, local_cid)
+
+            # Draw background explicitly if native (since canvas bg is already Colors.BG_DARK)
+            # Just process nodes
+            for child in root:
+                process_node(child)
+
+        except Exception as e:
+            self.create_text(
+                canvas_w // 2, canvas_h // 2,
+                text=f"⚙  System Diagram\nNative Render Error: {str(e)}",
+                fill=Colors.OFF, font=Fonts.BODY_BOLD, justify="center"
             )
 
 
