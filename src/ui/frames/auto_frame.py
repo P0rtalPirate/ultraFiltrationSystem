@@ -24,7 +24,7 @@ from src.ui.theme import Colors, Fonts
 
 # Project root for locating the SVG file
 _PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent.parent
-_SVG_PATH = _PROJECT_ROOT / "branding" / "system_diagram.svg"
+_SVG_PATH = _PROJECT_ROOT / "branding" / "live_system.svg"
 
 
 # ─────────────────────────────────────────────────────────────────────────────
