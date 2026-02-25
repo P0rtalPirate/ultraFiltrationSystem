@@ -1,75 +1,52 @@
 <svg width="900" height="560" viewBox="0 0 900 560" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI,Arial,sans-serif">
 <defs>
-  <!-- Horizontal pipe gradient (lit centre stripe) -->
   <linearGradient id="pH" x1="0" y1="0" x2="0" y2="1">
-    <stop offset="0%"   stop-color="#030e1c"/>
-    <stop offset="28%"  stop-color="#00d4ff" stop-opacity=".62"/>
-    <stop offset="60%"  stop-color="#00d4ff" stop-opacity=".50"/>
-    <stop offset="100%" stop-color="#030e1c"/>
+    <stop offset="0%" stop-color="#030e1c"/><stop offset="28%" stop-color="#00d4ff" stop-opacity=".62"/>
+    <stop offset="60%" stop-color="#00d4ff" stop-opacity=".50"/><stop offset="100%" stop-color="#030e1c"/>
   </linearGradient>
-  <!-- Vertical pipe gradient -->
   <linearGradient id="pV" x1="0" y1="0" x2="1" y2="0">
-    <stop offset="0%"   stop-color="#030e1c"/>
-    <stop offset="28%"  stop-color="#00d4ff" stop-opacity=".62"/>
-    <stop offset="60%"  stop-color="#00d4ff" stop-opacity=".50"/>
-    <stop offset="100%" stop-color="#030e1c"/>
+    <stop offset="0%" stop-color="#030e1c"/><stop offset="28%" stop-color="#00d4ff" stop-opacity=".62"/>
+    <stop offset="60%" stop-color="#00d4ff" stop-opacity=".50"/><stop offset="100%" stop-color="#030e1c"/>
   </linearGradient>
-  <!-- Wide manifold bar -->
   <linearGradient id="mH" x1="0" y1="0" x2="0" y2="1">
-    <stop offset="0%"   stop-color="#020c18"/>
-    <stop offset="20%"  stop-color="#00d4ff" stop-opacity=".50"/>
-    <stop offset="50%"  stop-color="#00d4ff" stop-opacity=".72"/>
-    <stop offset="80%"  stop-color="#00d4ff" stop-opacity=".50"/>
+    <stop offset="0%" stop-color="#020c18"/><stop offset="20%" stop-color="#00d4ff" stop-opacity=".50"/>
+    <stop offset="50%" stop-color="#00d4ff" stop-opacity=".72"/><stop offset="80%" stop-color="#00d4ff" stop-opacity=".50"/>
     <stop offset="100%" stop-color="#020c18"/>
   </linearGradient>
-  <!-- UF vessel cylindrical -->
   <linearGradient id="uf" x1="0" y1="0" x2="1" y2="0">
-    <stop offset="0%"   stop-color="#07182e"/>
-    <stop offset="22%"  stop-color="#1a4272"/>
-    <stop offset="52%"  stop-color="#2270b8"/>
-    <stop offset="78%"  stop-color="#1a4272"/>
+    <stop offset="0%" stop-color="#07182e"/><stop offset="22%" stop-color="#1a4272"/>
+    <stop offset="52%" stop-color="#2270b8"/><stop offset="78%" stop-color="#1a4272"/>
     <stop offset="100%" stop-color="#07182e"/>
   </linearGradient>
-  <!-- Tank -->
   <linearGradient id="tk" x1="0" y1="0" x2="1" y2="0">
-    <stop offset="0%"   stop-color="#05131e"/>
-    <stop offset="38%"  stop-color="#123050"/>
-    <stop offset="65%"  stop-color="#164468"/>
-    <stop offset="100%" stop-color="#05131e"/>
+    <stop offset="0%" stop-color="#05131e"/><stop offset="38%" stop-color="#123050"/>
+    <stop offset="65%" stop-color="#164468"/><stop offset="100%" stop-color="#05131e"/>
   </linearGradient>
-  <!-- Flange plate -->
   <linearGradient id="fl" x1="0" y1="0" x2="0" y2="1">
-    <stop offset="0%"   stop-color="#081c38"/>
-    <stop offset="50%"  stop-color="#1c4472"/>
+    <stop offset="0%" stop-color="#081c38"/><stop offset="50%" stop-color="#1c4472"/>
     <stop offset="100%" stop-color="#081c38"/>
   </linearGradient>
-  <!-- Pump body -->
   <linearGradient id="pm" x1="0" y1="0" x2="0" y2="1">
-    <stop offset="0%"   stop-color="#0a182e"/>
-    <stop offset="50%"  stop-color="#162a4c"/>
+    <stop offset="0%" stop-color="#0a182e"/><stop offset="50%" stop-color="#162a4c"/>
     <stop offset="100%" stop-color="#071220"/>
   </linearGradient>
-  <!-- Valve body -->
   <linearGradient id="vl" x1="0" y1="0" x2="1" y2="1">
-    <stop offset="0%"   stop-color="#152858"/>
-    <stop offset="100%" stop-color="#0a1838"/>
+    <stop offset="0%" stop-color="#152858"/><stop offset="100%" stop-color="#0a1838"/>
   </linearGradient>
-  <!-- Subtle glow for UF label only -->
   <filter id="gl" x="-50%" y="-50%" width="200%" height="200%">
     <feGaussianBlur stdDeviation="2.5" result="b"/>
     <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
   </filter>
-  <!-- Drop shadow for 3D components -->
-  <filter id="sh" x="-15%" y="-15%" width="130%" height="140%">
+  <filter id="sh" x="-15%" y="-15%" width="130%" height="135%">
     <feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#000" flood-opacity=".65"/>
   </filter>
 </defs>
 
-<!-- ─── BACKGROUND ─────────────────────────────────── -->
+<!-- BG -->
 <rect width="900" height="560" fill="#0b1020" rx="14"/>
 <rect x="3" y="3" width="894" height="554" fill="none" stroke="#101a2e" stroke-width="1.5" rx="12"/>
 
-<!-- ─── HEADER ─────────────────────────────────────── -->
+<!-- HEADER -->
 <g transform="translate(28,18)">
   <path d="M19,1C19,1 1,15 1,27C1,37 9,45 19,45C29,45 37,37 37,27C37,15 19,1 19,1Z"
         fill="none" stroke="#00d4ff" stroke-width="2.5" opacity=".9"/>
@@ -81,105 +58,134 @@
 <line x1="28" y1="72" x2="872" y2="72" stroke="#101a2e" stroke-width="1"/>
 
 <!--
-  ╔══════════════════════════════════════════════════════════╗
-  ║  COORDINATE MAP                                          ║
-  ║  Top manifold  : y=130-150  (h=20)                       ║
-  ║  Bottom pipe   : y=372-385  (h=13)                       ║
-  ║  Left vertical : x=212-225  (w=13)  — V2 at y≈316        ║
-  ║  Right col     : x=778-791  (w=13)  — V5→UF storage      ║
-  ║  UF vessel     : cx=422, top at y=150, bottom stub→y=372  ║
-  ║  V1: x=276   V3: x=524   drain T: x=600   V4: x=650      ║
-  ║  PP2 inline x=708-762  UF Storage: x=806                  ║
-  ║  Drain drop   : x=600-613  y=385-460                      ║
-  ╚══════════════════════════════════════════════════════════╝
+  PIPE LAYOUT:
+  Top manifold     : y=128-148, x=212..640
+  Left vertical    : x=212-225, y=148..374
+  Right vertical   : x=627-640, y=148..374
+  V2 horizontal    : x=225..380, y=258-271  ← LEFT SIDE of UF vessel
+  V4 horizontal    : x=462..627, y=258-271  ← RIGHT SIDE of UF vessel (opposite V2)
+  UF top stub      : x=415-428, y=148..166  ← connects UF top to manifold (V5 is on manifold)
+  Bottom feed      : x=105..375, y=374-387  (PP1→V1→UF bottom)
+  Bottom permeate  : x=462..595, y=374-387  (UF bottom→V3→drain T)
+  Drain drop       : x=569-582, y=387..462
+  PP2 horizontal   : x=640..808, y=314-327  (right vertical→PP2 motor→UF storage)
+  V5 gate          : x=586 on top manifold
 -->
 
-<!-- ─── PIPING ──────────────────────────────────────── -->
-<g id="pipes">
-  <!-- TOP MANIFOLD BAR (left vertical → right column) -->
-  <rect x="212" y="130" width="579" height="20" fill="url(#mH)" rx="4"/>
+<!-- ── PIPES ── -->
+<!-- Top manifold bar -->
+<rect x="212" y="128" width="428" height="20" fill="url(#mH)" rx="4"/>
 
-  <!-- LEFT VERTICAL bypass (header bottom → feed line) -->
-  <rect x="212" y="150" width="13" height="222" fill="url(#pV)" rx="3"/>
+<!-- Left vertical (bypass column) -->
+<rect x="212" y="148" width="13" height="226" fill="url(#pV)" rx="3"/>
 
-  <!-- BOTTOM FEED left segment: PP1 nozzle → UF centre -->
-  <rect x="105" y="372" width="317" height="13" fill="url(#pH)" rx="3"/>
+<!-- Right vertical (V4/PP2 column) -->
+<rect x="627" y="148" width="13" height="226" fill="url(#pV)" rx="3"/>
 
-  <!-- BOTTOM PERMEATE right segment: UF centre → PP2/storage -->
-  <rect x="422" y="372" width="384" height="13" fill="url(#pH)" rx="3"/>
+<!-- UF top stub (vessel top → manifold underside) -->
+<rect x="415" y="148" width="13" height="20" fill="url(#pV)"/>
 
-  <!-- RIGHT COLUMN: manifold → UF Storage Tank top -->
-  <rect x="778" y="150" width="13" height="162" fill="url(#pV)" rx="3"/>
+<!-- V2 horizontal: left vertical → UF LEFT SIDE PORT (same height as V4) -->
+<rect x="225" y="258" width="155" height="13" fill="url(#pH)" rx="3"/>
 
-  <!-- UF TOP STUB (vessel→manifold) -->
-  <rect x="416" y="150" width="13" height="16" fill="url(#pV)"/>
+<!-- V4 horizontal: UF RIGHT SIDE PORT → right vertical -->
+<rect x="462" y="258" width="165" height="13" fill="url(#pH)" rx="3"/>
 
-  <!-- DRAIN DROP: T-junction after V3 at x=600, drops to drain tank -->
-  <rect x="600" y="385" width="13" height="75" fill="url(#pV)" rx="3"/>
+<!-- Bottom feed left (PP1 → UF bottom) -->
+<rect x="105" y="374" width="270" height="13" fill="url(#pH)" rx="3"/>
 
-  <!-- Corner elbow squares (pipe-colour fill at 90° intersections) -->
-  <rect x="212" y="130" width="13" height="20" fill="#0d2a4a"/>
-  <rect x="778" y="130" width="13" height="20" fill="#0d2a4a"/>
-</g>
+<!-- Bottom permeate right (UF bottom → V3 → drain T-junction) -->
+<rect x="462" y="374" width="134" height="13" fill="url(#pH)" rx="3"/>
 
-<!-- ─── UF VESSEL ───────────────────────────────────── -->
-<!-- Vessel fits exactly: top at y=150 (manifold bottom), stub bottom at y=372 (pipe top) -->
+<!-- Drain drop (at T-junction after V3, x=569) -->
+<rect x="569" y="387" width="13" height="75" fill="url(#pV)" rx="3"/>
+
+<!-- PP2 horizontal (right vertical → PP2 motor → UF Storage) -->
+<rect x="640" y="314" width="168" height="13" fill="url(#pH)" rx="3"/>
+
+<!-- Corner elbow fills (dark squares at pipe intersections) -->
+<rect x="212" y="128" width="13" height="20" fill="#0c2540"/>
+<rect x="627" y="128" width="13" height="20" fill="#0c2540"/>
+<rect x="212" y="261" width="13" height="10" fill="#0c2540"/>
+<rect x="627" y="261" width="13" height="10" fill="#0c2540"/>
+<rect x="627" y="317" width="13" height="10" fill="#0c2540"/>
+<rect x="212" y="374" width="13" height="13" fill="#0c2540"/>
+
+
+<!-- ══════════════════════════════
+     UF VESSEL
+     transform(376,150)
+     Top cap: cy=15 → abs y=165
+     Body: y=15, h=193 → abs y=165..358
+     Mid-height (side ports): relative y=104-117 → abs y=254-267
+     Bottom of stub → abs y=374 (top of bottom pipe)
+══════════════════════════════ -->
 <g transform="translate(376,150)" filter="url(#sh)">
   <!-- Top flange plate -->
-  <rect x="-8" y="14" width="108" height="9" fill="url(#fl)" stroke="#1c4270" stroke-width="1" rx="1"/>
+  <rect x="-9" y="13" width="110" height="9" fill="url(#fl)" stroke="#1c4270" stroke-width="1" rx="1"/>
   <!-- Top cap -->
-  <ellipse cx="46" cy="16" rx="46" ry="13" fill="#1a4272" stroke="#1e4a7e" stroke-width="1.5"/>
+  <ellipse cx="46" cy="15" rx="46" ry="13" fill="#1a4272" stroke="#1e4a7e" stroke-width="1.5"/>
   <!-- Body -->
-  <rect x="5"  y="15" width="82" height="192" fill="url(#uf)" stroke="#1a4272" stroke-width="2" rx="5"/>
+  <rect x="5" y="15" width="82" height="193" fill="url(#uf)" stroke="#1a4272" stroke-width="2" rx="5"/>
   <!-- Highlight stripe -->
-  <rect x="36" y="19" width="17" height="184" fill="#fff" opacity=".04" rx="2"/>
+  <rect x="36" y="19" width="17" height="185" fill="#fff" opacity=".04" rx="2"/>
+  <!-- LEFT SIDE PORT nozzle stub (connects to V2 horizontal) -->
+  <rect x="-18" y="104" width="23" height="13" fill="url(#pV)" stroke="#1a4272" stroke-width="1" rx="2"/>
+  <!-- RIGHT SIDE PORT nozzle stub (connects to V4 horizontal) -->
+  <rect x="87" y="104" width="22" height="13" fill="url(#pV)" stroke="#1a4272" stroke-width="1" rx="2"/>
   <!-- Bottom cap -->
-  <ellipse cx="46" cy="207" rx="46" ry="13" fill="#060f20" stroke="#1a4272" stroke-width="1.5"/>
-  <!-- Bottom collar band -->
-  <rect x="1"  y="203" width="90" height="16" rx="3" fill="#0b2040" stroke="#1a4272" stroke-width="1.5"/>
+  <ellipse cx="46" cy="208" rx="46" ry="13" fill="#060f20" stroke="#1a4272" stroke-width="1.5"/>
+  <!-- Bottom collar -->
+  <rect x="1" y="204" width="90" height="16" rx="3" fill="#0b2040" stroke="#1a4272" stroke-width="1.5"/>
   <!-- Bottom flange plate -->
-  <rect x="-8" y="216" width="108" height="9" fill="url(#fl)" stroke="#1c4270" stroke-width="1" rx="1"/>
-  <!-- Bottom nozzle stub (connects to pipe at absolute y=372) -->
-  <rect x="39" y="225" width="14" height="20" fill="url(#pV)" stroke="#1a4272" stroke-width="1" rx="2"/>
+  <rect x="-9" y="217" width="110" height="9" fill="url(#fl)" stroke="#1c4270" stroke-width="1" rx="1"/>
+  <!-- Bottom nozzle (connects to bottom pipe at abs y=374) -->
+  <rect x="39" y="226" width="14" height="20" fill="url(#pV)" stroke="#1a4272" stroke-width="1" rx="2"/>
   <!-- Rivets -->
-  <circle cx="13" cy="44"  r="2.5" fill="#1e4a7e"/>
-  <circle cx="79" cy="44"  r="2.5" fill="#1e4a7e"/>
-  <circle cx="13" cy="172" r="2.5" fill="#1e4a7e"/>
-  <circle cx="79" cy="172" r="2.5" fill="#1e4a7e"/>
+  <circle cx="13" cy="44" r="2.5" fill="#1e4a7e"/>
+  <circle cx="79" cy="44" r="2.5" fill="#1e4a7e"/>
+  <circle cx="13" cy="173" r="2.5" fill="#1e4a7e"/>
+  <circle cx="79" cy="173" r="2.5" fill="#1e4a7e"/>
   <!-- Label -->
-  <text x="46" y="115" text-anchor="middle" font-size="27" font-weight="700"
+  <text x="46" y="118" text-anchor="middle" font-size="27" font-weight="700"
         fill="#00d4ff" letter-spacing="3" filter="url(#gl)">UF</text>
-  <text x="46" y="134" text-anchor="middle" font-size="10" fill="#405870" letter-spacing="1.5">MEMBRANE</text>
+  <text x="46" y="137" text-anchor="middle" font-size="10" fill="#405870" letter-spacing="1.5">MEMBRANE</text>
 </g>
 
-<!-- ─── TANKS ────────────────────────────────────────── -->
-<!-- DMF STORAGE -->
-<g transform="translate(50,420)" filter="url(#sh)">
+
+<!-- ══ TANKS ══ -->
+
+<!-- DMF STORAGE (bottom-left) -->
+<g transform="translate(50,422)" filter="url(#sh)">
   <rect x="0" y="16" width="120" height="76" fill="url(#tk)" stroke="#1a4272" stroke-width="2" rx="5"/>
   <ellipse cx="60" cy="16" rx="60" ry="17" fill="#164465" stroke="#1a4272" stroke-width="2"/>
   <ellipse cx="60" cy="92" rx="60" ry="17" fill="#050e1c" stroke="#1a4272" stroke-width="1.5"/>
-  <text x="60" y="54" text-anchor="middle" font-size="14" font-weight="700" fill="#cce0f4">DMF</text>
-  <text x="60" y="72" text-anchor="middle" font-size="14" font-weight="700" fill="#cce0f4">STORAGE</text>
+  <text x="60" y="55" text-anchor="middle" font-size="14" font-weight="700" fill="#cce0f4">DMF</text>
+  <text x="60" y="74" text-anchor="middle" font-size="14" font-weight="700" fill="#cce0f4">STORAGE</text>
 </g>
-<!-- UF STORAGE TANK -->
-<g transform="translate(806,312)" filter="url(#sh)">
-  <rect x="0" y="14" width="84" height="84" fill="url(#tk)" stroke="#1a4272" stroke-width="2" rx="5"/>
-  <ellipse cx="42" cy="14" rx="42" ry="14" fill="#164465" stroke="#1a4272" stroke-width="2"/>
-  <ellipse cx="42" cy="98" rx="42" ry="14" fill="#050e1c" stroke="#1a4272" stroke-width="1.5"/>
-  <text x="42" y="55" text-anchor="middle" font-size="11" font-weight="700" fill="#cce0f4">UF STORAGE</text>
-  <text x="42" y="73" text-anchor="middle" font-size="11" font-weight="700" fill="#cce0f4">TANK</text>
+
+<!-- UF STORAGE TANK (right) -->
+<g transform="translate(808,310)" filter="url(#sh)">
+  <rect x="0" y="14" width="82" height="84" fill="url(#tk)" stroke="#1a4272" stroke-width="2" rx="5"/>
+  <ellipse cx="41" cy="14" rx="41" ry="13" fill="#164465" stroke="#1a4272" stroke-width="2"/>
+  <ellipse cx="41" cy="98" rx="41" ry="13" fill="#050e1c" stroke="#1a4272" stroke-width="1.5"/>
+  <text x="41" y="56" text-anchor="middle" font-size="11" font-weight="700" fill="#cce0f4">UF STORAGE</text>
+  <text x="41" y="73" text-anchor="middle" font-size="11" font-weight="700" fill="#cce0f4">TANK</text>
 </g>
-<!-- DRAIN (below drain T-junction at x=600, centred on x=606) -->
-<g transform="translate(572,460)" filter="url(#sh)">
+
+<!-- DRAIN -->
+<g transform="translate(543,462)" filter="url(#sh)">
   <rect x="0" y="8" width="70" height="42" fill="#08080f" stroke="#181830" stroke-width="1.5" rx="4"/>
-  <ellipse cx="35" cy="8"  rx="35" ry="9"  fill="#0e0e20" stroke="#181830" stroke-width="1.5"/>
-  <ellipse cx="35" cy="50" rx="35" ry="9"  fill="#040408" stroke="#181830" stroke-width="1.5"/>
+  <ellipse cx="35" cy="8"  rx="35" ry="9" fill="#0e0e20" stroke="#181830" stroke-width="1.5"/>
+  <ellipse cx="35" cy="50" rx="35" ry="9" fill="#040408" stroke="#181830" stroke-width="1.5"/>
   <text x="35" y="31" text-anchor="middle" font-size="12" font-weight="700" fill="#3c3c58">DRAIN</text>
 </g>
 
-<!-- ─── PUMPS ─────────────────────────────────────────── -->
+
+<!-- ══ PUMPS ══ -->
+
 <!-- PP1 -->
-<g transform="translate(22,358)" filter="url(#sh)">
+<g transform="translate(22,360)" filter="url(#sh)">
   <rect x="0" y="4" width="62" height="32" fill="url(#pm)" stroke="#1c3c78" stroke-width="1.8" rx="5"/>
   <line x1="11" y1="6" x2="11" y2="34" stroke="#071425" stroke-width="2.5"/>
   <line x1="19" y1="6" x2="19" y2="34" stroke="#071425" stroke-width="2.5"/>
@@ -187,17 +193,14 @@
   <line x1="35" y1="6" x2="35" y2="34" stroke="#071425" stroke-width="2.5"/>
   <line x1="43" y1="6" x2="43" y2="34" stroke="#071425" stroke-width="2.5"/>
   <line x1="51" y1="6" x2="51" y2="34" stroke="#071425" stroke-width="2.5"/>
-  <!-- Volute head -->
   <circle cx="72" cy="20" r="15" fill="#0e1c34" stroke="#1c3c78" stroke-width="1.8"/>
-  <circle cx="72" cy="20" r="7"  fill="#00d4ff" opacity=".14"/>
-  <circle cx="72" cy="20" r="3"  fill="#00d4ff" opacity=".68"/>
-  <!-- Output nozzle -->
+  <circle cx="72" cy="20" r="3" fill="#00d4ff" opacity=".68"/>
   <rect x="85" y="16" width="18" height="8" fill="#112244" stroke="#1c3c78" stroke-width="1.5" rx="2"/>
   <text x="31" y="-5" text-anchor="middle" font-size="13" font-weight="700" fill="#c0d8f0">PP1</text>
 </g>
 
-<!-- PP2 (inline on permeate line, x=708) -->
-<g transform="translate(706,360)" filter="url(#sh)">
+<!-- PP2 (inline on PP2 horizontal at y=314) -->
+<g transform="translate(698,302)" filter="url(#sh)">
   <rect x="0" y="4" width="50" height="28" fill="url(#pm)" stroke="#1c3c78" stroke-width="1.8" rx="4"/>
   <line x1="10" y1="6" x2="10" y2="30" stroke="#071425" stroke-width="2"/>
   <line x1="18" y1="6" x2="18" y2="30" stroke="#071425" stroke-width="2"/>
@@ -205,75 +208,60 @@
   <line x1="34" y1="6" x2="34" y2="30" stroke="#071425" stroke-width="2"/>
   <line x1="42" y1="6" x2="42" y2="30" stroke="#071425" stroke-width="2"/>
   <circle cx="59" cy="18" r="12" fill="#0e1c34" stroke="#1c3c78" stroke-width="1.8"/>
-  <circle cx="59" cy="18" r="5"  fill="#00d4ff" opacity=".14"/>
   <circle cx="59" cy="18" r="2.5" fill="#00d4ff" opacity=".68"/>
   <rect x="70" y="14" width="12" height="8" fill="#112244" stroke="#1c3c78" stroke-width="1.5" rx="2"/>
   <text x="25" y="-5" text-anchor="middle" font-size="13" font-weight="700" fill="#c0d8f0">PP2</text>
 </g>
 
-<!-- ─── VALVES  (engineering gate-valve blocks) ──────────
-     Each valve: rect body + two triangles pointing INWARD
-     to form classic gate/butterfly valve P&ID symbol.
-     Valve body is wider than pipe height.
- ─────────────────────────────────────────────────────── -->
 
-<!-- Helper: reusable shapes are inlined per valve -->
+<!-- ══ VALVES  (rectangular gate-valve blocks) ══ -->
 
-<!-- V1 — bottom feed, x=276 -->
-<g transform="translate(275,368)">
+<!-- V1: bottom feed line x=278 -->
+<g transform="translate(276,370)">
   <rect x="0" y="-4" width="28" height="21" fill="url(#vl)" stroke="#00d4ff" stroke-width="1.8" rx="2"/>
-  <!-- Left-pointing wedge -->
-  <polygon points="0,-4  0,17  12,6" fill="#00d4ff" opacity=".70"/>
-  <!-- Right-pointing wedge -->
-  <polygon points="28,-4 28,17  16,6" fill="#00d4ff" opacity=".70"/>
-  <!-- Centre gap (dark) -->
-  <rect x="11" y="1" width="6" height="11" fill="#090f20"/>
+  <polygon points="0,-4 0,17 12,6"   fill="#00d4ff" opacity=".70"/>
+  <polygon points="28,-4 28,17 16,6" fill="#00d4ff" opacity=".70"/>
+  <rect x="11" y="1" width="6" height="11" fill="#0a1020"/>
   <text x="14" y="-10" text-anchor="middle" font-size="12" font-weight="700" fill="#bcd6f0">V1</text>
 </g>
 
-<!-- V2 — left vertical, LOWER section y=316 -->
-<g transform="translate(208,316)">
-  <rect x="-4" y="0" width="21" height="28" fill="url(#vl)" stroke="#00d4ff" stroke-width="1.8" rx="2"/>
-  <!-- Top wedge -->
-  <polygon points="-4,0  17,0  6,12" fill="#00d4ff" opacity=".70"/>
-  <!-- Bottom wedge -->
-  <polygon points="-4,28 17,28  6,16" fill="#00d4ff" opacity=".70"/>
-  <rect x="1" y="11" width="11" height="6" fill="#090f20"/>
-  <text x="-16" y="18" text-anchor="middle" font-size="12" font-weight="700" fill="#bcd6f0">V2</text>
+<!-- V2: on LEFT SIDE horizontal pipe (x=300, y=258) -->
+<g transform="translate(298,254)">
+  <rect x="0" y="0" width="28" height="21" fill="url(#vl)" stroke="#00d4ff" stroke-width="1.8" rx="2"/>
+  <polygon points="0,0  0,21 12,10"  fill="#00d4ff" opacity=".70"/>
+  <polygon points="28,0 28,21 16,10" fill="#00d4ff" opacity=".70"/>
+  <rect x="11" y="5" width="6" height="11" fill="#0a1020"/>
+  <text x="14" y="-6" text-anchor="middle" font-size="12" font-weight="700" fill="#bcd6f0">V2</text>
 </g>
 
-<!-- V3 — permeate line, x=524 -->
-<g transform="translate(522,368)">
+<!-- V3: bottom permeate line x=510 -->
+<g transform="translate(508,370)">
   <rect x="0" y="-4" width="28" height="21" fill="url(#vl)" stroke="#00d4ff" stroke-width="1.8" rx="2"/>
-  <polygon points="0,-4  0,17  12,6" fill="#00d4ff" opacity=".70"/>
-  <polygon points="28,-4 28,17  16,6" fill="#00d4ff" opacity=".70"/>
-  <rect x="11" y="1" width="6" height="11" fill="#090f20"/>
+  <polygon points="0,-4 0,17 12,6"   fill="#00d4ff" opacity=".70"/>
+  <polygon points="28,-4 28,17 16,6" fill="#00d4ff" opacity=".70"/>
+  <rect x="11" y="1" width="6" height="11" fill="#0a1020"/>
   <text x="14" y="-10" text-anchor="middle" font-size="12" font-weight="700" fill="#bcd6f0">V3</text>
 </g>
 
-<!-- V4 — permeate line, x=650 (between drain junction and PP2) -->
-<g transform="translate(648,368)">
-  <rect x="0" y="-4" width="28" height="21" fill="url(#vl)" stroke="#00d4ff" stroke-width="1.8" rx="2"/>
-  <polygon points="0,-4  0,17  12,6" fill="#00d4ff" opacity=".70"/>
-  <polygon points="28,-4 28,17  16,6" fill="#00d4ff" opacity=".70"/>
-  <rect x="11" y="1" width="6" height="11" fill="#090f20"/>
-  <text x="14" y="-10" text-anchor="middle" font-size="12" font-weight="700" fill="#bcd6f0">V4</text>
+<!-- V4: on RIGHT SIDE horizontal pipe (x=530, y=258) -->
+<g transform="translate(528,254)">
+  <rect x="0" y="0" width="28" height="21" fill="url(#vl)" stroke="#00d4ff" stroke-width="1.8" rx="2"/>
+  <polygon points="0,0  0,21 12,10"  fill="#00d4ff" opacity=".70"/>
+  <polygon points="28,0 28,21 16,10" fill="#00d4ff" opacity=".70"/>
+  <rect x="11" y="5" width="6" height="11" fill="#0a1020"/>
+  <text x="14" y="-6" text-anchor="middle" font-size="12" font-weight="700" fill="#bcd6f0">V4</text>
 </g>
 
-<!-- V5 — top manifold, far right x=740, bigger block -->
-<g transform="translate(736,126)">
-  <rect x="0" y="0" width="34" height="24" fill="#182e60" stroke="#00d4ff" stroke-width="2" rx="3"/>
-  <polygon points="0,0  0,24  14,12" fill="#00d4ff" opacity=".80"/>
-  <polygon points="34,0 34,24 20,12" fill="#00d4ff" opacity=".80"/>
-  <rect x="13" y="5" width="8" height="14" fill="#090f20"/>
-  <!-- Output arrow tip to the right of body -->
-  <polygon points="34,8 48,12 34,16" fill="#00d4ff" opacity=".80"/>
+<!-- V5: on top manifold (x=586), UF top is at x=415-428 so V5 is to the right of UF -->
+<g transform="translate(584,122)">
+  <rect x="0" y="0" width="34" height="26" fill="#182e60" stroke="#00d4ff" stroke-width="2" rx="3"/>
+  <polygon points="0,0  0,26 14,13"  fill="#00d4ff" opacity=".80"/>
+  <polygon points="34,0 34,26 20,13" fill="#00d4ff" opacity=".80"/>
+  <rect x="13" y="6" width="8" height="14" fill="#0a1020"/>
   <text x="17" y="-7" text-anchor="middle" font-size="13" font-weight="700" fill="#bcd6f0">V5</text>
 </g>
 
-<!-- ─── FOOTER ─────────────────────────────────────── -->
+<!-- FOOTER -->
 <line x1="28" y1="542" x2="872" y2="542" stroke="#101a2e" stroke-width="1"/>
-<text x="450" y="555" text-anchor="middle" font-size="10" fill="#2c3e55">
-  Process Flow Diagram · Raj Enterprices · Version 1.0
-</text>
+<text x="450" y="554" text-anchor="middle" font-size="10" fill="#2c3e55">Process Flow Diagram · Raj Enterprices · Version 1.0</text>
 </svg>
