@@ -102,12 +102,32 @@ cat > ~/.config/openbox/rc.xml <<EOF
 EOF
 
 cat > ~/.config/openbox/autostart <<EOF
+# ── Disable screen blanking and DPMS ───────────────────────────────────────
+xset s off &
+xset -dpms &
+xset s noblank &
+
 # Hide cursor after 0 seconds of inactivity
 unclutter -idle 0 &
 
 # Start UltraFiltration Binary in Fullscreen
 $INSTALL_DIR/ultra-filt &
 EOF
+
+# ── Disable screen blanking (kernel + raspi-config layers) ─────────────────
+echo "🖥️  Disabling screen blanking (kernel and Pi config)..."
+
+# Layer 1: raspi-config non-interactive
+sudo raspi-config nonint do_blanking 1 2>/dev/null || true
+
+# Layer 2: Kernel boot parameter
+CMDLINE=/boot/cmdline.txt
+if [ -f "$CMDLINE" ] && ! grep -q "consoleblank=0" "$CMDLINE"; then
+    sudo sed -i 's/$/ consoleblank=0/' "$CMDLINE"
+    echo "   ✔  consoleblank=0 added to $CMDLINE"
+fi
+
+echo "   ✔  Screen blanking fully disabled."
 
 # Create .xinitrc for startx/xinit fallback
 cat > ~/.xinitrc <<EOF
