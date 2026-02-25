@@ -1,151 +1,266 @@
-<svg width="1000" height="700" viewBox="0 0 1000 700" xmlns="http://www.w3.org/2000/svg">
-  <!-- Gradients Definition -->
+<svg width="900" height="580" viewBox="0 0 900 580" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Arial, sans-serif">
+
+  <!-- ══════════════════════════════════════════════ -->
+  <!--  Raj Enterprices – UF System Process Diagram   -->
+  <!--  Styled to match dark industrial app theme     -->
+  <!-- ══════════════════════════════════════════════ -->
+
   <defs>
-    <linearGradient id="tankGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" style="stop-color:#4a90e2;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#2a5a9a;stop-opacity:1" />
+    <!-- Dark Pipe gradient (lit top, dark bottom) -->
+    <linearGradient id="pipeV" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%"   stop-color="#0d2540"/>
+      <stop offset="35%"  stop-color="#00d2ff" stop-opacity="0.7"/>
+      <stop offset="65%"  stop-color="#00d2ff" stop-opacity="0.7"/>
+      <stop offset="100%" stop-color="#0d2540"/>
     </linearGradient>
-    <linearGradient id="ufGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" style="stop-color:#3a7ec2;stop-opacity:1" />
-      <stop offset="50%" style="stop-color:#62a8ed;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#3a7ec2;stop-opacity:1" />
+    <linearGradient id="pipeH" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%"   stop-color="#0d2540"/>
+      <stop offset="35%"  stop-color="#00d2ff" stop-opacity="0.7"/>
+      <stop offset="65%"  stop-color="#00d2ff" stop-opacity="0.7"/>
+      <stop offset="100%" stop-color="#0d2540"/>
     </linearGradient>
-    <linearGradient id="pipeGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" style="stop-color:#4a90e2;stop-opacity:1" />
-      <stop offset="50%" style="stop-color:#c8e1ff;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#4a90e2;stop-opacity:1" />
+    <!-- UF Vessel gradient -->
+    <linearGradient id="ufVesselGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%"   stop-color="#0d2137"/>
+      <stop offset="30%"  stop-color="#1e3a5f"/>
+      <stop offset="60%"  stop-color="#1a6090"/>
+      <stop offset="80%"  stop-color="#1e3a5f"/>
+      <stop offset="100%" stop-color="#0d2137"/>
     </linearGradient>
-    <linearGradient id="pumpGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" style="stop-color:#333;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#666;stop-opacity:1" />
+    <!-- Tank gradient -->
+    <linearGradient id="tankGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%"   stop-color="#0d2137"/>
+      <stop offset="40%"  stop-color="#1e3a5f"/>
+      <stop offset="70%"  stop-color="#1a4d6e"/>
+      <stop offset="100%" stop-color="#0d2137"/>
     </linearGradient>
-    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
-      <feGaussianBlur in="SourceAlpha" stdDeviation="3" />
-      <feOffset dx="2" dy="2" result="offsetblur" />
-      <feComponentTransfer>
-        <feFuncA type="linear" slope="0.5" />
-      </feComponentTransfer>
-      <feMerge>
-        <feMergeNode />
-        <feMergeNode in="SourceGraphic" />
-      </feMerge>
+    <!-- Pump motor gradient -->
+    <linearGradient id="pumpGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%"   stop-color="#0d1f35"/>
+      <stop offset="50%"  stop-color="#1e3a5f"/>
+      <stop offset="100%" stop-color="#0d1f35"/>
+    </linearGradient>
+    <!-- Glow filter for active pipes -->
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
+    <!-- Drop shadow filter -->
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#000000" flood-opacity="0.6"/>
+    </filter>
+    <!-- Clip for tank body -->
+    <clipPath id="tankClip">
+      <rect x="0" y="0" width="120" height="75"/>
+    </clipPath>
   </defs>
 
   <!-- Background -->
-  <rect width="1000" height="700" fill="#ffffff" />
-  
-  <!-- Title -->
-  <text x="500" y="60" text-anchor="middle" font-family="Arial, sans-serif" font-size="48" fill="#000000" font-weight="bold">UF SYSTEM DRAWING</text>
+  <rect width="900" height="580" fill="#0f0f1a" rx="16"/>
+  <!-- Subtle inner border -->
+  <rect x="4" y="4" width="892" height="572" fill="none" stroke="#2a2a4a" stroke-width="1.5" rx="14"/>
 
-  <!-- PIPING SYSTEM -->
-  <g stroke="#3a7ec2" stroke-width="8" fill="none" stroke-linejoin="round" stroke-linecap="round">
-    <!-- Path from PP1 split to Bottom UF -->
-    <path d="M 130 540 L 465 540" /> 
-    <!-- Path to V2 Vertical -->
-    <path d="M 285 540 L 285 220 L 465 220" />
-    <!-- Path from UF Bottom to Drain/Storage -->
-    <path d="M 535 540 L 820 540" />
-    <!-- Drain Vertical -->
-    <path d="M 780 540 L 780 620" />
-    <!-- V4 Vertical -->
-    <path d="M 720 540 L 720 220 L 750 220" />
-    <!-- Top Manifold -->
-    <path d="M 500 120 L 500 100 L 910 100 L 910 260 L 870 260" />
-    <!-- V4 extension to Top -->
-    <path d="M 810 220 L 810 100" />
-    <!-- PP2 Loop -->
-    <path d="M 810 320 L 810 100" />
+  <!-- ╔══════════════╗ -->
+  <!-- ║  LOGO AREA   ║ -->
+  <!-- ╚══════════════╝ -->
+  <!-- Company logo mark: water-drop style -->
+  <g transform="translate(42, 28)">
+    <!-- Drop shape -->
+    <path d="M 22 0 C 22 0 0 18 0 30 C 0 41 10 50 22 50 C 34 50 44 41 44 30 C 44 18 22 0 22 0 Z"
+          fill="none" stroke="#00d2ff" stroke-width="2.5" opacity="0.9"/>
+    <!-- Inner wave detail -->
+    <path d="M 8 34 Q 22 24 36 34" fill="none" stroke="#00d2ff" stroke-width="2" opacity="0.6"/>
+    <!-- Accent dot -->
+    <circle cx="22" cy="20" r="3" fill="#00d2ff" opacity="0.8"/>
+  </g>
+  <!-- Company Name -->
+  <text x="100" y="44" font-size="22" font-weight="bold" fill="#e8e8f0" letter-spacing="1">Raj Enterprices</text>
+  <text x="100" y="64" font-size="12" fill="#00d2ff" letter-spacing="2">ULTRAFILTRATION SYSTEM</text>
+  <!-- Divider line under header -->
+  <line x1="42" y1="82" x2="858" y2="82" stroke="#2a2a4a" stroke-width="1"/>
+
+  <!-- ╔═══════════════════════════════════╗ -->
+  <!-- ║  P I P I N G  (drawn first)       ║ -->
+  <!-- ╚═══════════════════════════════════╝ -->
+
+  <!-- All pipe widths: ~10px for mains, elbow joints are rounded squares -->
+
+  <!-- ── MAIN HORIZONTAL RUN (bottom feed line, y=450) ─────────── -->
+  <!-- PP1 → V1 → UF bottom -->
+  <rect x="95"  y="444" width="260" height="12" fill="url(#pipeH)" rx="4"/> <!-- PP1 to V1 area -->
+  <!-- UF bottom → V3 → V4 bifurcation -->
+  <rect x="490" y="444" width="258" height="12" fill="url(#pipeH)" rx="4"/>
+
+  <!-- ── VERTICAL LEG: split up from ~x=220 to top manifold (y=180) ─── -->
+  <!-- This is the V2 leg feeding UF top -->
+  <rect x="211" y="182" width="12" height="274" fill="url(#pipeV)" rx="4"/>
+
+  <!-- ── TOP HORIZONTAL MANIFOLD (y=182) ────────────────────────── -->
+  <!-- Left arm to UF top + right arm to V5 / Storage -->
+  <rect x="211" y="176" width="392" height="12" fill="url(#pipeH)" rx="4"/>
+
+  <!-- ── VERTICAL LEG: right side down from top manifold (x=603) to V5 area ── -->
+  <rect x="597" y="176" width="12" height="112" fill="url(#pipeV)" rx="4"/>
+
+  <!-- ── V5 to UF Storage Tank (horizontal, y=282) ─────────────── -->
+  <rect x="597" y="276" width="170" height="12" fill="url(#pipeH)" rx="4"/>
+
+  <!-- ── PP2 vertical from Storage Tank down to V4-level (x=760) ── -->
+  <rect x="754" y="288" width="12" height="168" fill="url(#pipeV)" rx="4"/>
+
+  <!-- ── V4 connection: x=660 vertical up to Top manifold level ── -->
+  <rect x="654" y="176" width="12" height="280" fill="url(#pipeV)" rx="4"/>
+
+  <!-- ── Junction dots at pipe T-intersections ──────────────────── -->
+  <circle cx="217" cy="182" r="7" fill="#00d2ff" filter="url(#glow)"/>
+  <circle cx="603" cy="182" r="7" fill="#00d2ff" filter="url(#glow)"/>
+  <circle cx="660" cy="188" r="7" fill="#00d2ff" filter="url(#glow)"/>
+  <circle cx="217" cy="450" r="7" fill="#00d2ff" filter="url(#glow)"/>
+  <circle cx="660" cy="450" r="7" fill="#00d2ff" filter="url(#glow)"/>
+
+  <!-- Drain vertical drop from V3 (x=590, y=450 down) -->
+  <rect x="584" y="450" width="12" height="70" fill="url(#pipeV)" rx="4"/>
+
+  <!-- ╔══════════════════════╗ -->
+  <!-- ║   UF VESSEL (center) ║ -->
+  <!-- ╚══════════════════════╝ -->
+  <g transform="translate(350, 170)" filter="url(#shadow)">
+    <!-- Top port stub -->
+    <rect x="57" y="-26" width="22" height="30" fill="url(#ufVesselGrad)" stroke="#2a5a9a" stroke-width="1.5"/>
+    <ellipse cx="68" cy="-26" rx="11" ry="5" fill="#1e3a5f" stroke="#2a5a9a" stroke-width="1.5"/>
+    <!-- Main vessel body -->
+    <rect x="20" y="0" width="96" height="270" fill="url(#ufVesselGrad)" stroke="#1e3a5f" stroke-width="2" rx="8"/>
+    <!-- Highlight stripe -->
+    <rect x="50" y="0" width="22" height="270" fill="#ffffff" opacity="0.04" rx="4"/>
+    <!-- Top cap (ellipse) -->
+    <ellipse cx="68" cy="0"   rx="48" ry="14" fill="#1e3a5f" stroke="#2a5a9a" stroke-width="2"/>
+    <!-- Bottom cap -->
+    <ellipse cx="68" cy="270" rx="48" ry="14" fill="#0d2137" stroke="#2a5a9a" stroke-width="2"/>
+    <!-- Bottom port stub -->
+    <rect x="57" y="270" width="22" height="26" fill="url(#ufVesselGrad)" stroke="#2a5a9a" stroke-width="1.5"/>
+    <ellipse cx="68" cy="296" rx="11" ry="5" fill="#0d2137" stroke="#2a5a9a" stroke-width="1.5"/>
+    <!-- Rivets decoration -->
+    <circle cx="30" cy="40"  r="3" fill="#2a5a9a"/>
+    <circle cx="30" cy="230" r="3" fill="#2a5a9a"/>
+    <circle cx="106" cy="40"  r="3" fill="#2a5a9a"/>
+    <circle cx="106" cy="230" r="3" fill="#2a5a9a"/>
+    <!-- Label -->
+    <text x="68" y="142" text-anchor="middle" font-size="26" font-weight="bold" fill="#00d2ff" letter-spacing="2">UF</text>
+    <text x="68" y="162" text-anchor="middle" font-size="11" fill="#7f8c9b" letter-spacing="1">MEMBRANE</text>
   </g>
 
-  <!-- UF VESSEL (Large Center) -->
-  <g transform="translate(465, 120)" filter="url(#shadow)">
-    <!-- Main Body -->
-    <rect x="0" y="30" width="70" height="390" fill="url(#ufGrad)" stroke="#1a4b8a" stroke-width="2" />
-    <!-- Top Cap -->
-    <ellipse cx="35" cy="30" rx="35" ry="15" fill="#4a90e2" stroke="#1a4b8a" stroke-width="2" />
-    <!-- Bottom Ring Area -->
-    <rect x="-5" y="420" width="80" height="30" rx="5" fill="#2a5a9a" stroke="#1a4b8a" stroke-width="2" />
-    <ellipse cx="35" cy="450" rx="35" ry="10" fill="#2a5a9a" stroke="#1a4b8a" stroke-width="2" />
-    <text x="35" y="235" text-anchor="middle" font-family="Arial" font-size="24" fill="#ffffff" font-weight="bold">UF</text>
-    <!-- Ports -->
-    <rect x="25" y="-20" width="20" height="50" fill="url(#ufGrad)" />
+  <!-- ╔══════════════════════╗ -->
+  <!-- ║   TANKS              ║ -->
+  <!-- ╚══════════════════════╝ -->
+
+  <!-- DMF STORAGE (bottom-left) -->
+  <g transform="translate(62, 470)" filter="url(#shadow)">
+    <rect x="0"  y="10" width="120" height="75" fill="url(#tankGrad)" stroke="#1e3a5f" stroke-width="1.5" rx="6"/>
+    <ellipse cx="60" cy="10"  rx="60" ry="14" fill="#1a4d6e" stroke="#1e3a5f" stroke-width="2"/>
+    <ellipse cx="60" cy="85"  rx="60" ry="14" fill="#0d2137" stroke="#1e3a5f" stroke-width="1.5"/>
+    <text x="60" y="52" text-anchor="middle" font-size="13" font-weight="bold" fill="#e8e8f0">DMF</text>
+    <text x="60" y="68" text-anchor="middle" font-size="13" font-weight="bold" fill="#e8e8f0">STORAGE</text>
   </g>
 
-  <!-- TANKS -->
-  <!-- DMF STORAGE (Bottom Left) -->
-  <g transform="translate(120, 580)" filter="url(#shadow)">
-    <rect x="0" y="0" width="160" height="100" rx="10" fill="url(#tankGrad)" stroke="#1a4b8a" stroke-width="2" />
-    <ellipse cx="80" cy="0" rx="80" ry="20" fill="#4a90e2" stroke="#1a4b8a" stroke-width="2" />
-    <text x="80" y="55" text-anchor="middle" font-family="Arial" font-size="18" fill="#000000" font-weight="bold">DMF</text>
-    <text x="80" y="80" text-anchor="middle" font-family="Arial" font-size="18" fill="#000000" font-weight="bold">STORAGE</text>
+  <!-- UF STORAGE TANK (right) -->
+  <g transform="translate(740, 300)" filter="url(#shadow)">
+    <rect x="0"  y="14" width="130" height="90" fill="url(#tankGrad)" stroke="#1e3a5f" stroke-width="1.5" rx="6"/>
+    <ellipse cx="65" cy="14" rx="65" ry="16" fill="#1a4d6e" stroke="#1e3a5f" stroke-width="2"/>
+    <ellipse cx="65" cy="104" rx="65" ry="16" fill="#0d2137" stroke="#1e3a5f" stroke-width="1.5"/>
+    <text x="65" y="60" text-anchor="middle" font-size="12" font-weight="bold" fill="#e8e8f0">UF STORAGE</text>
+    <text x="65" y="76" text-anchor="middle" font-size="12" font-weight="bold" fill="#e8e8f0">TANK</text>
   </g>
 
-  <!-- UF STORAGE TANK (Middle Right) -->
-  <g transform="translate(820, 380)" filter="url(#shadow)">
-    <rect x="0" y="0" width="160" height="120" rx="10" fill="url(#tankGrad)" stroke="#1a4b8a" stroke-width="2" />
-    <ellipse cx="80" cy="0" rx="80" ry="20" fill="#4a90e2" stroke="#1a4b8a" stroke-width="2" />
-    <text x="80" y="65" text-anchor="middle" font-family="Arial" font-size="18" fill="#000000" font-weight="bold">UF STORAGE</text>
-    <text x="80" y="90" text-anchor="middle" font-family="Arial" font-size="18" fill="#000000" font-weight="bold">TANK</text>
-    <!-- Pipe into tank -->
-    <rect x="75" y="-60" width="10" height="60" fill="#3a7ec2" />
+  <!-- DRAIN (bottom-right) -->
+  <g transform="translate(555, 520)" filter="url(#shadow)">
+    <rect x="0" y="8" width="80" height="44" fill="#16213e" stroke="#2a2a4a" stroke-width="1.5" rx="6"/>
+    <ellipse cx="40" cy="8"  rx="40" ry="10" fill="#1a1a2e" stroke="#2a2a4a" stroke-width="1.5"/>
+    <ellipse cx="40" cy="52" rx="40" ry="10" fill="#0f0f1a" stroke="#2a2a4a" stroke-width="1.5"/>
+    <text x="40" y="33" text-anchor="middle" font-size="13" font-weight="bold" fill="#7f8c9b">DRAIN</text>
   </g>
 
-  <!-- DRAIN (Bottom Right) -->
-  <g transform="translate(740, 650)" filter="url(#shadow)">
-    <rect x="0" y="0" width="120" height="50" fill="url(#tankGrad)" rx="5" stroke="#1a4b8a" stroke-width="2" />
-    <ellipse cx="60" cy="0" rx="60" ry="10" fill="#4a90e2" stroke="#1a4b8a" stroke-width="2" />
-    <text x="60" y="32" text-anchor="middle" font-family="Arial" font-size="18" fill="#ffffff" font-weight="bold">DRAIN</text>
+  <!-- ╔══════════════════════╗ -->
+  <!-- ║   PUMPS              ║ -->
+  <!-- ╚══════════════════════╝ -->
+
+  <!-- PP1 Motor (bottom-left, feeding DMF → system) -->
+  <g transform="translate(32, 432)" filter="url(#shadow)">
+    <!-- Motor housing (cylinder side view) -->
+    <rect x="0" y="0" width="65" height="38" fill="url(#pumpGrad)" stroke="#2a5a9a" stroke-width="2" rx="6"/>
+    <!-- Fins -->
+    <line x1="14" y1="2" x2="14" y2="36" stroke="#1e3a5f" stroke-width="2"/>
+    <line x1="24" y1="2" x2="24" y2="36" stroke="#1e3a5f" stroke-width="2"/>
+    <line x1="34" y1="2" x2="34" y2="36" stroke="#1e3a5f" stroke-width="2"/>
+    <line x1="44" y1="2" x2="44" y2="36" stroke="#1e3a5f" stroke-width="2"/>
+    <!-- Pump head -->
+    <circle cx="70" cy="19" r="14" fill="#16213e" stroke="#2a5a9a" stroke-width="2"/>
+    <circle cx="70" cy="19" r="7"  fill="#00d2ff" opacity="0.3"/>
+    <circle cx="70" cy="19" r="3"  fill="#00d2ff"/>
+    <!-- Label -->
+    <text x="32" y="-8" text-anchor="middle" font-size="13" font-weight="bold" fill="#e8e8f0">PP1</text>
   </g>
 
-  <!-- PUMPS -->
-  <!-- PP1 -->
-  <g transform="translate(50, 540)" filter="url(#shadow)">
-    <rect x="0" y="-30" width="80" height="60" rx="15" fill="#2a5a9a" />
-    <rect x="10" y="-35" width="60" height="50" rx="5" fill="#3a7ec2" />
-    <!-- Ridges for cooling -->
-    <line x1="15" y1="-25" x2="15" y2="5" stroke="#1a4b8a" stroke-width="2" />
-    <line x1="25" y1="-25" x2="25" y2="5" stroke="#1a4b8a" stroke-width="2" />
-    <line x1="35" y1="-25" x2="35" y2="5" stroke="#1a4b8a" stroke-width="2" />
-    <text x="0" y="-45" font-family="Arial" font-size="20" font-weight="bold">PP1</text>
-    <!-- Connection to DMF -->
-    <path d="M 80 0 L 100 0 L 100 40" stroke="#3a7ec2" stroke-width="6" fill="none" />
+  <!-- PP2 Motor (right side, backwash) -->
+  <g transform="translate(750, 250)" filter="url(#shadow)">
+    <rect x="0" y="0" width="60" height="34" fill="url(#pumpGrad)" stroke="#2a5a9a" stroke-width="2" rx="6"/>
+    <line x1="12" y1="2" x2="12" y2="32" stroke="#1e3a5f" stroke-width="2"/>
+    <line x1="22" y1="2" x2="22" y2="32" stroke="#1e3a5f" stroke-width="2"/>
+    <line x1="32" y1="2" x2="32" y2="32" stroke="#1e3a5f" stroke-width="2"/>
+    <line x1="42" y1="2" x2="42" y2="32" stroke="#1e3a5f" stroke-width="2"/>
+    <circle cx="65" cy="17" r="12" fill="#16213e" stroke="#2a5a9a" stroke-width="2"/>
+    <circle cx="65" cy="17" r="6"  fill="#00d2ff" opacity="0.3"/>
+    <circle cx="65" cy="17" r="2.5" fill="#00d2ff"/>
+    <text x="30" y="-8" text-anchor="middle" font-size="13" font-weight="bold" fill="#e8e8f0">PP2</text>
   </g>
 
-  <!-- PP2 -->
-  <g transform="translate(770, 320)" filter="url(#shadow)">
-    <rect x="0" y="-30" width="80" height="60" rx="15" fill="#2a5a9a" />
-    <rect x="10" y="-35" width="60" height="50" rx="5" fill="#3a7ec2" />
-    <text x="40" y="-45" font-family="Arial" font-size="20" font-weight="bold" text-anchor="middle">PP2</text>
-    <!-- Connection -->
-    <path d="M 80 0 L 100 0 L 100 60" stroke="#3a7ec2" stroke-width="6" fill="none" />
+  <!-- ╔══════════════════════╗ -->
+  <!-- ║   VALVES (V1 – V5)  ║ -->
+  <!-- ╚══════════════════════╝ -->
+
+  <!-- Valve helper macro: square body with internal arrow  -->
+  <!-- V1 — bottom horizontal, between PP1-side and UF inlet -->
+  <g transform="translate(312, 438)">
+    <rect x="0" y="0" width="30" height="26" fill="#1e3a5f" stroke="#00d2ff" stroke-width="2" rx="3"/>
+    <polygon points="5,4 25,13 5,22" fill="#00d2ff" opacity="0.7"/>
+    <text x="15" y="-7" text-anchor="middle" font-size="14" font-weight="bold" fill="#e8e8f0">V1</text>
   </g>
 
-  <!-- VALVES (V1 - V5) -->
-  <g font-family="Arial" font-size="18" font-weight="bold" fill="#000000">
-    <!-- V1 -->
-    <rect x="335" y="525" width="30" height="30" fill="#4a90e2" stroke="#1a4b8a" rx="3" />
-    <text x="350" y="515" text-anchor="middle">V1</text>
-    
-    <!-- V2 -->
-    <rect x="270" y="320" width="30" height="30" fill="#4a90e2" stroke="#1a4b8a" rx="3" />
-    <text x="310" y="340">V2</text>
-
-    <!-- V3 -->
-    <rect x="640" y="525" width="30" height="30" fill="#4a90e2" stroke="#1a4b8a" rx="3" />
-    <text x="655" y="515" text-anchor="middle">V3</text>
-
-    <!-- V4 -->
-    <rect x="705" y="320" width="30" height="30" fill="#4a90e2" stroke="#1a4b8a" rx="3" />
-    <text x="745" y="340">V4</text>
-
-    <!-- V5 -->
-    <rect x="865" y="85" width="45" height="45" fill="#2a5a9a" stroke="#1a4b8a" rx="5" />
-    <text x="887" y="115" text-anchor="middle" fill="#ffffff">V5</text>
+  <!-- V2 — vertical left leg (going up from feed to top manifold) -->
+  <g transform="translate(205, 290)">
+    <rect x="0" y="0" width="26" height="30" fill="#1e3a5f" stroke="#00d2ff" stroke-width="2" rx="3"/>
+    <polygon points="4,25 13,5 22,25" fill="#00d2ff" opacity="0.7"/>
+    <text x="-18" y="18" text-anchor="middle" font-size="14" font-weight="bold" fill="#e8e8f0">V2</text>
   </g>
 
-  <!-- Additional Components -->
-  <!-- Check valve / flow indicator on PP2 line -->
-  <rect x="800" y="240" width="20" height="30" fill="#4a90e2" stroke="#1a4b8a" />
+  <!-- V3 — bottom horizontal, drain side -->
+  <g transform="translate(560, 438)">
+    <rect x="0" y="0" width="30" height="26" fill="#1e3a5f" stroke="#00d2ff" stroke-width="2" rx="3"/>
+    <polygon points="5,4 25,13 5,22" fill="#00d2ff" opacity="0.7"/>
+    <text x="15" y="-7" text-anchor="middle" font-size="14" font-weight="bold" fill="#e8e8f0">V3</text>
+  </g>
+
+  <!-- V4 — vertical right leg (going up from bottom to top manifold, right side) -->
+  <g transform="translate(648, 338)">
+    <rect x="0" y="0" width="26" height="30" fill="#1e3a5f" stroke="#00d2ff" stroke-width="2" rx="3"/>
+    <polygon points="4,25 13,5 22,25" fill="#00d2ff" opacity="0.7"/>
+    <text x="32" y="20" text-anchor="start" font-size="14" font-weight="bold" fill="#e8e8f0">V4</text>
+  </g>
+
+  <!-- V5 — top manifold, going right to storage line -->
+  <g transform="translate(588, 170)">
+    <rect x="0" y="0" width="30" height="26" fill="#1e3560" stroke="#00d2ff" stroke-width="2.5" rx="3"/>
+    <polygon points="5,4 25,13 5,22" fill="#00d2ff" opacity="0.9"/>
+    <text x="15" y="-8" text-anchor="middle" font-size="15" font-weight="bold" fill="#e8e8f0">V5</text>
+    <!-- Arrow head on right side of V5 -->
+    <polygon points="30,8 42,13 30,18" fill="#00d2ff" opacity="0.9"/>
+  </g>
+
+  <!-- ╔══════════════════════╗ -->
+  <!-- ║   LABELS & LEGEND    ║ -->
+  <!-- ╚══════════════════════╝ -->
+
+  <!-- Footer info -->
+  <line x1="42" y1="560" x2="858" y2="560" stroke="#2a2a4a" stroke-width="1"/>
+  <text x="450" y="574" text-anchor="middle" font-size="11" fill="#7f8c9b">Process Flow Diagram  ·  Raj Enterprices  ·  Version 1.0</text>
 
 </svg>
