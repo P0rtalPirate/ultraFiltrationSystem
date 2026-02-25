@@ -52,29 +52,29 @@
   <rect x="105" y="400" width="317" height="13" fill="url(#pH)" rx="3"/>
   
   <!-- Left Vertical Bypass (starts at x=220) -->
-  <rect x="220" y="265" width="13" height="135" fill="url(#pV)" rx="3"/>
-  <rect x="220" y="265" width="135" height="13" fill="url(#pH)" rx="3"/> <!-- horizontal to side port -->
+  <rect x="220" y="195" width="13" height="205" fill="url(#pV)" rx="3"/>
+  <rect x="220" y="195" width="165" height="13" fill="url(#pH)" rx="3"/> <!-- horizontal to HIGHER side port -->
 
-  <!-- Top Outlet (standalone, not connected to V2 manifold) -->
+  <!-- Top Outlet -->
   <rect x="424" y="140" width="13" height="30" fill="url(#pV)"/>
-  <rect x="424" y="140" width="375" height="13" fill="url(#pH)" rx="3"/> <!-- header toward storage -->
+  <rect x="424" y="140" width="375" height="13" fill="url(#pH)" rx="3"/> 
 
   <!-- Bottom Permeate Line -->
   <rect x="422" y="400" width="388" height="13" fill="url(#pH)" rx="3"/>
   <rect x="650" y="413" width="13" height="65" fill="url(#pV)" rx="3"/> <!-- drain drop -->
 
-  <!-- Right Vertical (connects permeate to side port) at x=680 -->
-  <rect x="680" y="265" width="13" height="135" fill="url(#pV)" rx="3"/>
-  <rect x="480" y="265" width="200" height="13" fill="url(#pH)" rx="3"/> <!-- horizontal to side port -->
+  <!-- Right Vertical (connects permeate to higher side port) at x=680 -->
+  <rect x="680" y="195" width="13" height="205" fill="url(#pV)" rx="3"/>
+  <rect x="480" y="195" width="200" height="13" fill="url(#pH)" rx="3"/> <!-- horizontal to HIGHER side port -->
 
-  <!-- Right-most Tank Column (x=800) -->
+  <!-- Right-most Tank Column -->
   <rect x="800" y="153" width="13" height="175" fill="url(#pV)" rx="3"/>
   <rect x="740" y="328" width="60" height="13" fill="url(#pH)" rx="3"/> <!-- output to storage -->
 
   <!-- Corner Elbows -->
-  <rect x="220" y="265" width="13" height="13" fill="#0d2a4a"/>
+  <rect x="220" y="195" width="13" height="13" fill="#0d2a4a"/>
   <rect x="800" y="140" width="13" height="13" fill="#0d2a4a"/>
-  <rect x="680" y="265" width="13" height="13" fill="#0d2a4a"/>
+  <rect x="680" y="195" width="13" height="13" fill="#0d2a4a"/>
 </g>
 
 <!-- UF VESSEL -->
@@ -82,9 +82,9 @@
   <rect x="-8" y="14" width="108" height="9" fill="url(#fl)" stroke="#1c4270" stroke-width="1" rx="1"/>
   <ellipse cx="46" cy="16" rx="46" ry="13" fill="#1a4272" stroke="#1e4a7e" stroke-width="1.5"/>
   <rect x="5" y="15" width="82" height="215" fill="url(#uf)" stroke="#1a4272" stroke-width="2" rx="5"/>
-  <!-- Side port stubs -->
-  <rect x="-18" y="95" width="23" height="13" fill="url(#pV)" stroke="#1a4272" stroke-width="1" rx="1"/>
-  <rect x="87" y="95" width="23" height="13" fill="url(#pV)" stroke="#1a4272" stroke-width="1" rx="1"/>
+  <!-- HIGHER Side port stubs (y=25 rel -> y=195 abs) -->
+  <rect x="-18" y="25" width="23" height="13" fill="url(#pV)" stroke="#1a4272" stroke-width="1" rx="1"/>
+  <rect x="87" y="25" width="23" height="13" fill="url(#pV)" stroke="#1a4272" stroke-width="1" rx="1"/>
   <ellipse cx="46" cy="230" rx="46" ry="13" fill="#060f20" stroke="#1a4272" stroke-width="1.5"/>
   <rect x="1" y="226" width="90" height="16" rx="3" fill="#0b2040" stroke="#1a4272" stroke-width="1.5"/>
   <rect x="-8" y="239" width="108" height="9" fill="url(#fl)" stroke="#1c4270" stroke-width="1" rx="1"/>
@@ -124,29 +124,23 @@
 </g>
 
 <!-- VALVES -->
-<!-- V1: bottom feed -->
 <g transform="translate(320,396)">
   <rect x="0" y="-4" width="28" height="21" fill="url(#vl)" stroke="#00d4ff" stroke-width="1.8" rx="2"/>
-  <polygon points="0,-4 0,17 12,6" fill="#00d4ff" opacity=".7"/><polygon points="28,-4 28,17 16,6" fill="#00d4ff" opacity=".7"/>
   <text x="14" y="-10" text-anchor="middle" font-size="12" font-weight="700" fill="#bcd6f0">V1</text>
 </g>
-<!-- V2: shifted to left vertical branch -->
 <g transform="translate(216,330)">
   <rect x="-4" y="0" width="21" height="28" fill="url(#vl)" stroke="#00d4ff" stroke-width="1.8" rx="2"/>
   <polygon points="-4,0 17,0 6,12" fill="#00d4ff" opacity=".7"/><polygon points="-4,28 17,28 6,16" fill="#00d4ff" opacity=".7"/>
   <text x="-16" y="18" text-anchor="middle" font-size="12" font-weight="700" fill="#bcd6f0">V2</text>
 </g>
-<!-- V3: bottom permeate -->
 <g transform="translate(510,396)">
   <rect x="0" y="-4" width="28" height="21" fill="url(#vl)" stroke="#00d4ff" stroke-width="1.8" rx="2"/>
   <text x="14" y="-10" text-anchor="middle" font-size="12" font-weight="700" fill="#bcd6f0">V3</text>
 </g>
-<!-- V4: on right vertical branch (opp V2) -->
 <g transform="translate(676,330)">
   <rect x="0" y="0" width="21" height="28" fill="url(#vl)" stroke="#00d4ff" stroke-width="1.8" rx="2"/>
   <text x="32" y="18" text-anchor="start" font-size="12" font-weight="700" fill="#bcd6f0">V4</text>
 </g>
-<!-- V5: top horiz from UF center center -->
 <g transform="translate(560,132)">
   <rect x="0" y="0" width="34" height="24" fill="#182e60" stroke="#00d4ff" stroke-width="2" rx="3"/>
   <text x="17" y="-7" text-anchor="middle" font-size="13" font-weight="700" fill="#bcd6f0">V5</text>
