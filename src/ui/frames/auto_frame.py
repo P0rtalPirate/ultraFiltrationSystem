@@ -298,9 +298,13 @@ class SvgDiagramCanvas(tk.Canvas):
                 is_on = lcid and self._states.get(lcid, False)
                 fill_color = get_color(node, nid, lcid, is_on)
 
+                # 1. Pump & Valve Pulsing
                 pulse_scale = 1.0
-                if lcid in [6, 7] and is_on:
-                    pulse_scale = 1.0 + 0.08 * math.sin(self._anim_tick * 0.4)
+                if is_on:
+                    if lcid in [6, 7]: # Pumps
+                        pulse_scale = 1.0 + 0.08 * math.sin(self._anim_tick * 0.4)
+                    elif tag == "polygon": # Valve wedges
+                        pulse_scale = 1.0 + 0.15 * math.sin(self._anim_tick * 0.5)
 
                 # ── Path Rendering ──────────────────────────────────────────
                 if tag == "path":
@@ -343,16 +347,23 @@ class SvgDiagramCanvas(tk.Canvas):
                 elif tag == "ellipse":
                     cx = (float(node.get("cx",0)) + ltx) * scale + ox
                     cy = (float(node.get("cy",0)) + lty) * scale + oy
-                    rx = float(node.get("rx",0)) * scale
-                    ry = float(node.get("ry",0)) * scale
+                    rx = float(node.get("rx",0)) * scale * pulse_scale
+                    ry = float(node.get("ry",0)) * scale * pulse_scale
                     if fill_color:
                         self.create_oval(cx-rx, cy-ry, cx+rx, cy+ry, fill=fill_color, outline="", width=0)
 
                 elif tag == "polygon":
                     pts = node.get("points", "").strip().split()
                     coords = []
+                    # Compute center for scaling wedges
+                    avg_x = sum([float(p.split(",")[0]) for p in pts]) / len(pts)
+                    avg_y = sum([float(p.split(",")[1]) for p in pts]) / len(pts)
+                    
                     for p in pts:
                         px, py = map(float, p.split(","))
+                        # Scale from center
+                        px = avg_x + (px - avg_x) * pulse_scale
+                        py = avg_y + (py - avg_y) * pulse_scale
                         coords.extend([(px+ltx)*scale+ox, (py+lty)*scale+oy])
                     if fill_color:
                         self.create_polygon(coords, fill=fill_color, outline="", width=0)
