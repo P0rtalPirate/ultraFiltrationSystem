@@ -81,3 +81,37 @@ def get_gpio():
 
 logger.info("Config loaded  |  hardware=%s  fullscreen=%s  log=%s",
             IS_HARDWARE, IS_FULLSCREEN, LOG_LEVEL)
+
+
+# ── User Preferences (persisted across reboots) ───────────────────────────────
+import json
+
+_PREFS_FILE = _project_root / ".uf_prefs.json"
+
+
+def _load_prefs() -> dict:
+    try:
+        with open(_PREFS_FILE, "r") as f:
+            return json.load(f)
+    except Exception:
+        return {}
+
+
+def _save_prefs(prefs: dict):
+    try:
+        with open(_PREFS_FILE, "w") as f:
+            json.dump(prefs, f, indent=2)
+    except Exception:
+        pass
+
+
+def get_svg_view_pref() -> bool:
+    """Return True if the auto frame should show the live SVG diagram view."""
+    return bool(_load_prefs().get("svg_view", False))
+
+
+def set_svg_view_pref(value: bool):
+    """Persist the SVG view toggle state so it survives reboots."""
+    prefs = _load_prefs()
+    prefs["svg_view"] = bool(value)
+    _save_prefs(prefs)

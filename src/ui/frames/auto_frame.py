@@ -2,13 +2,22 @@
 auto_frame.py — Automated cycle display with rounded cards and progress bar.
 Countdown starts when pump engages, ends when valves close.
 Between processes the bar fills back up.
+
+Includes a persistent toggle button (bottom-right) that swaps the valve/pump
+card grid with the live system diagram SVG. The preference is stored in
+.uf_prefs.json and survives Pi reboots.
 """
 
 import tkinter as tk
 from tkinter import ttk
+from pathlib import Path
 
-from src.config import VALVE_LABELS
+from src.config import VALVE_LABELS, get_svg_view_pref, set_svg_view_pref
 from src.ui.theme import Colors, Fonts
+
+# Project root for locating the SVG file
+_PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent.parent
+_SVG_PATH = _PROJECT_ROOT / "branding" / "system_diagram.svg"
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -210,6 +219,50 @@ class RoundedProgressBar(tk.Canvas):
 
 
 # ─────────────────────────────────────────────────────────────────────────────
+#  SVG Diagram Canvas
+# ─────────────────────────────────────────────────────────────────────────────
+class SvgDiagramCanvas(tk.Canvas):
+    """Renders the system_diagram.svg as a static image inside a canvas."""
+
+    def __init__(self, parent, **kwargs):
+        super().__init__(
+            parent, bg=Colors.BG_DARK, highlightthickness=0, **kwargs
+        )
+        self._photo = None
+        self._load_svg()
+        self.bind("<Configure>", self._on_resize)
+
+    def _load_svg(self):
+        """Load and render the SVG file. Falls back to a text label if unavailable."""
+        try:
+            import cairosvg
+            from PIL import Image, ImageTk
+            import io
+
+            png_data = cairosvg.svg2png(url=str(_SVG_PATH), output_width=760, output_height=300)
+            img = Image.open(io.BytesIO(png_data))
+            self._photo = ImageTk.PhotoImage(img)
+            self._img_w = img.width
+            self._img_h = img.height
+        except Exception:
+            # Fallback: try PIL directly if SVG decoding fails, or just show text
+            self._photo = None
+
+    def _on_resize(self, event):
+        self.delete("all")
+        w, h = event.width, event.height
+        if self._photo:
+            self.create_image(w // 2, h // 2, anchor="center", image=self._photo)
+        else:
+            self.create_text(
+                w // 2, h // 2,
+                text="⚙  System Diagram\n(install cairosvg + Pillow to render SVG)",
+                fill=Colors.TEXT_MUTED, font=Fonts.BODY_BOLD,
+                justify="center", anchor="center"
+            )
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 #  Auto Frame
 # ─────────────────────────────────────────────────────────────────────────────
 class AutoFrame(ttk.Frame):
@@ -220,41 +273,90 @@ class AutoFrame(ttk.Frame):
         self.app = app
         self._cards: dict[int, IndicatorCard] = {}
         self._back_locked = False
+        self._svg_view: bool = get_svg_view_pref()
         self._build()
 
     def _build(self):
-        # Status header
+        # ── Status header ─────────────────────────────────────────────
         self._process_label = ttk.Label(
             self, text="Initializing...", style="Status.TLabel",
             font=Fonts.HEADING
         )
         self._process_label.pack(pady=(15, 10))
 
-        # Valve indicators
-        grid = ttk.Frame(self, style="TFrame")
-        grid.pack(expand=True)
+        # ── Content area (card grid  OR  svg — one visible at a time) ─
+        self._content_frame = ttk.Frame(self, style="TFrame")
+        self._content_frame.pack(fill="both", expand=True)
 
-        row1 = ttk.Frame(grid, style="TFrame")
+        # Valve indicator grid
+        self._card_grid = ttk.Frame(self._content_frame, style="TFrame")
+        row1 = ttk.Frame(self._card_grid, style="TFrame")
         row1.pack(pady=6)
         for cid in [1, 2, 3, 4]:
             card = IndicatorCard(row1, cid)
             card.pack(side="left", padx=5)
             self._cards[cid] = card
 
-        row2 = ttk.Frame(grid, style="TFrame")
+        row2 = ttk.Frame(self._card_grid, style="TFrame")
         row2.pack(pady=6)
         for cid in [5, 6, 7]:
             card = IndicatorCard(row2, cid)
             card.pack(side="left", padx=5)
             self._cards[cid] = card
 
-        # Rounded progress bar
+        # SVG Diagram canvas
+        self._svg_canvas = SvgDiagramCanvas(
+            self._content_frame, width=760, height=300
+        )
+
+        # ── Rounded progress bar ──────────────────────────────────────
         self._progress = RoundedProgressBar(self, width=580)
         self._progress.pack(pady=(15, 5))
 
-        # Info label
+        # ── Info label ────────────────────────────────────────────────
         self._time_label = ttk.Label(self, text="", style="Muted.TLabel")
-        self._time_label.pack(pady=(0, 10))
+        self._time_label.pack(pady=(0, 4))
+
+        # ── Toggle button (bottom-right, absolute position) ───────────
+        self._toggle_btn = tk.Button(
+            self,
+            text=self._toggle_label(),
+            command=self._on_toggle,
+            bg=Colors.BG_PANEL,
+            fg=Colors.INFO,
+            activebackground=Colors.BG_SURFACE,
+            activeforeground=Colors.INFO,
+            relief="flat",
+            bd=0,
+            padx=10,
+            pady=4,
+            font=("Segoe UI", 9, "bold"),
+            cursor="hand2",
+        )
+        self._toggle_btn.place(relx=1.0, rely=1.0, anchor="se", x=-10, y=-10)
+
+        # Apply initial view state
+        self._apply_view()
+
+    # ── Toggle ────────────────────────────────────────────────────────
+
+    def _toggle_label(self) -> str:
+        return "🗺  Diagram View" if not self._svg_view else "⚙  Status View"
+
+    def _on_toggle(self):
+        self._svg_view = not self._svg_view
+        set_svg_view_pref(self._svg_view)
+        self._toggle_btn.config(text=self._toggle_label())
+        self._apply_view()
+
+    def _apply_view(self):
+        """Show the card grid or the SVG depending on the current preference."""
+        if self._svg_view:
+            self._card_grid.pack_forget()
+            self._svg_canvas.pack(fill="both", expand=True, padx=10)
+        else:
+            self._svg_canvas.pack_forget()
+            self._card_grid.pack(expand=True)
 
     # ── Callbacks from ProcessManager ────────────────────────────────
 
@@ -265,7 +367,6 @@ class AutoFrame(ttk.Frame):
             text=f">>  {display}  —  Opening valves",
             foreground=Colors.TRANSITION
         )
-        # Refill bar during the 5s valve pre-open phase
         self._progress.start_refill(5, label="Opening valves...")
         self._time_label.config(text=f"Process: {display}")
 
@@ -305,10 +406,8 @@ class AutoFrame(ttk.Frame):
         self._progress.reset()
         self._time_label.config(text="")
 
-        # Stop the process manager (pumps off, then valves after delay)
         self.app.process_manager.stop_current_process(callback=self._on_fully_stopped)
 
-        # Show a visible countdown
         self._stop_remaining = 5
         self._tick_stop()
 
@@ -340,6 +439,10 @@ class AutoFrame(ttk.Frame):
             card.set_state(False)
         self._progress.reset()
         self._time_label.config(text="")
+        # Re-read preference in case it was changed elsewhere
+        self._svg_view = get_svg_view_pref()
+        self._toggle_btn.config(text=self._toggle_label())
+        self._apply_view()
 
     @staticmethod
     def _fmt(secs: int) -> str:
