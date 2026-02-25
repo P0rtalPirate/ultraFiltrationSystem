@@ -11,6 +11,7 @@ card grid with the live system diagram SVG. The preference is stored in
 import tkinter as tk
 from tkinter import ttk
 from pathlib import Path
+import re
 
 from src.config import VALVE_LABELS, get_svg_view_pref, set_svg_view_pref
 from src.ui.theme import Colors, Fonts
@@ -222,41 +223,82 @@ class RoundedProgressBar(tk.Canvas):
 #  SVG Diagram Canvas
 # ─────────────────────────────────────────────────────────────────────────────
 class SvgDiagramCanvas(tk.Canvas):
-    """Renders the system_diagram.svg as a static image inside a canvas."""
+    """Renders the system_diagram.svg as a live image inside a canvas."""
 
     def __init__(self, parent, **kwargs):
         super().__init__(
             parent, bg=Colors.BG_DARK, highlightthickness=0, **kwargs
         )
         self._photo = None
-        self._load_svg()
+        self._states = {i: False for i in range(1, 8)} # Channels 1-7
+        self._template_xml = ""
+        
+        # Load the base SVG template
+        try:
+            with open(_SVG_PATH, "r") as f:
+                self._template_xml = f.read()
+            
+            # Inject CSS style block into <defs> (or at the start)
+            style_block = """
+<style>
+  .on rect, .on circle, .on ellipse { fill: #00ff88 !important; filter: url(#gl); }
+  .on text { fill: #ffffff !important; }
+</style>"""
+            if "<defs>" in self._template_xml:
+                self._template_xml = self._template_xml.replace("<defs>", f"<defs>{style_block}", 1)
+            else:
+                self._template_xml = self._template_xml.replace("<svg ", f"<svg>{style_block}", 1)
+
+        except Exception:
+            self._template_xml = ""
+
+        self._refresh_photo()
         self.bind("<Configure>", self._on_resize)
 
-    def _load_svg(self):
-        """Load and render the SVG file. Falls back to a text label if unavailable."""
+    def update_state(self, channel_id: int, is_on: bool):
+        """Update the state of a component and refresh the image."""
+        if self._states.get(channel_id) == is_on:
+            return
+        self._states[channel_id] = is_on
+        self._refresh_photo()
+        self._on_resize(None)
+
+    def _refresh_photo(self):
+        """Re-render the SVG based on current states."""
+        if not self._template_xml:
+            return
+
         try:
             import cairosvg
             from PIL import Image, ImageTk
             import io
 
-            png_data = cairosvg.svg2png(url=str(_SVG_PATH), output_width=760, output_height=300)
+            # Apply states to XML
+            xml = self._template_xml
+            for cid, on in self._states.items():
+                if on:
+                    # Target v_1 to v_5, or p_6, p_7
+                    tag_id = f"v_{cid}" if cid <= 5 else f"p_{cid}"
+                    # Match <g id="v_1" and replace with <g id="v_1" class="on"
+                    pattern = rf'(id="{tag_id}")'
+                    xml = re.sub(pattern, r'\1 class="on"', xml)
+
+            png_data = cairosvg.svg2png(bytestring=xml.encode("utf-8"), output_width=760, output_height=300)
             img = Image.open(io.BytesIO(png_data))
             self._photo = ImageTk.PhotoImage(img)
-            self._img_w = img.width
-            self._img_h = img.height
         except Exception:
-            # Fallback: try PIL directly if SVG decoding fails, or just show text
             self._photo = None
 
     def _on_resize(self, event):
         self.delete("all")
-        w, h = event.width, event.height
+        w = event.width if event else self.winfo_width()
+        h = event.height if event else self.winfo_height()
         if self._photo:
             self.create_image(w // 2, h // 2, anchor="center", image=self._photo)
         else:
             self.create_text(
                 w // 2, h // 2,
-                text="⚙  System Diagram\n(install cairosvg + Pillow to render SVG)",
+                text="⚙  System Diagram\n(render error or missing dependencies)",
                 fill=Colors.TEXT_MUTED, font=Fonts.BODY_BOLD,
                 justify="center", anchor="center"
             )
@@ -397,6 +439,9 @@ class AutoFrame(ttk.Frame):
     def on_valve_change(self, channel_id: int, is_on: bool):
         if channel_id in self._cards:
             self._cards[channel_id].set_state(is_on)
+        # Also update the SVG canvas if it exists
+        if hasattr(self, "_svg_canvas"):
+            self._svg_canvas.update_state(channel_id, is_on)
 
     def go_back(self):
         if self._back_locked:
@@ -427,6 +472,9 @@ class AutoFrame(ttk.Frame):
         self._process_label.config(text="Stopped", foreground=Colors.TEXT_MUTED)
         for card in self._cards.values():
             card.set_state(False)
+        # Reset SVG as well
+        for cid in range(1, 8):
+            self._svg_canvas.update_state(cid, False)
         self._back_locked = False
         self.app.show_frame("select")
 
@@ -437,6 +485,9 @@ class AutoFrame(ttk.Frame):
         )
         for card in self._cards.values():
             card.set_state(False)
+        # Reset SVG as well
+        for cid in range(1, 8):
+            self._svg_canvas.update_state(cid, False)
         self._progress.reset()
         self._time_label.config(text="")
         # Re-read preference in case it was changed elsewhere
