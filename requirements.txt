@@ -1,5 +1,7 @@
 python-dotenv>=1.0.0
 Pillow>=10.0.0
+svglib>=1.5.0
+reportlab>=4.0.0
 # RPi.GPIO is only needed on the Raspberry Pi and is pre-installed on Raspberry Pi OS
 # Uncomment below if installing on a fresh Pi:
 # RPi.GPIO>=0.7.0

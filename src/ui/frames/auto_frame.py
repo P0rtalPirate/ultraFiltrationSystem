@@ -229,24 +229,44 @@ class SvgDiagramCanvas(tk.Canvas):
             parent, bg=Colors.BG_DARK, highlightthickness=0, **kwargs
         )
         self._photo = None
+        self.render_ok = False   # True only when we successfully loaded the image
         self._load_svg()
         self.bind("<Configure>", self._on_resize)
 
     def _load_svg(self):
-        """Load and render the SVG file. Falls back to a text label if unavailable."""
+        """Load and render the SVG file. Tries cairosvg first, then svglib."""
+        # ── Attempt 1: cairosvg (best quality) ────────────────────────
         try:
             import cairosvg
             from PIL import Image, ImageTk
             import io
-
             png_data = cairosvg.svg2png(url=str(_SVG_PATH), output_width=760, output_height=300)
             img = Image.open(io.BytesIO(png_data))
             self._photo = ImageTk.PhotoImage(img)
-            self._img_w = img.width
-            self._img_h = img.height
+            self.render_ok = True
+            return
         except Exception:
-            # Fallback: try PIL directly if SVG decoding fails, or just show text
-            self._photo = None
+            pass
+
+        # ── Attempt 2: svglib + reportlab (cross-platform) ────────────
+        try:
+            from svglib.svglib import svg2rlg
+            from reportlab.graphics import renderPM
+            from PIL import Image, ImageTk
+            import io
+            drawing = svg2rlg(str(_SVG_PATH))
+            if drawing:
+                png_data = renderPM.drawToString(drawing, fmt="PNG")
+                img = Image.open(io.BytesIO(png_data))
+                self._photo = ImageTk.PhotoImage(img)
+                self.render_ok = True
+                return
+        except Exception:
+            pass
+
+        # ── Both failed ─────────────────────────────────────────────
+        self._photo = None
+        self.render_ok = False
 
     def _on_resize(self, event):
         self.delete("all")
@@ -350,11 +370,13 @@ class AutoFrame(ttk.Frame):
         self._apply_view()
 
     def _apply_view(self):
-        """Show the card grid or the SVG depending on the current preference."""
-        if self._svg_view:
+        """Show the card grid or the SVG depending on the current preference.
+        Automatically falls back to card view when SVG rendering is unavailable."""
+        if self._svg_view and self._svg_canvas.render_ok:
             self._card_grid.pack_forget()
             self._svg_canvas.pack(fill="both", expand=True, padx=10)
         else:
+            # If SVG rendering failed, force card view (don't persist — just display)
             self._svg_canvas.pack_forget()
             self._card_grid.pack(expand=True)
 
