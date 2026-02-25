@@ -9,19 +9,19 @@
   </linearGradient>
   <!-- Components -->
   <linearGradient id="uf" x1="0" y1="0" x2="1" y2="0">
-    <stop offset="0%"   stop-color="#07182e"/><stop offset="22%"  stop-color="#1a4272"/><stop offset="52%"  stop-color="#2270b8"/><stop offset="78%"  stop-color="#1a4272"/><stop offset="100%" stop-color="#07182e"/>
+    <stop offset="0%" stop-color="#07182e"/><stop offset="22%" stop-color="#1a4272"/><stop offset="52%" stop-color="#2270b8"/><stop offset="78%" stop-color="#1a4272"/><stop offset="100%" stop-color="#07182e"/>
   </linearGradient>
   <linearGradient id="tk" x1="0" y1="0" x2="1" y2="0">
-    <stop offset="0%"   stop-color="#05131e"/><stop offset="38%"  stop-color="#123050"/><stop offset="65%"  stop-color="#164468"/><stop offset="100%" stop-color="#05131e"/>
+    <stop offset="0%" stop-color="#05131e"/><stop offset="38%" stop-color="#123050"/><stop offset="65%" stop-color="#164468"/><stop offset="100%" stop-color="#05131e"/>
   </linearGradient>
   <linearGradient id="fl" x1="0" y1="0" x2="0" y2="1">
-    <stop offset="0%"   stop-color="#081c38"/><stop offset="50%"  stop-color="#1c4472"/><stop offset="100%" stop-color="#081c38"/>
+    <stop offset="0%" stop-color="#081c38"/><stop offset="50%" stop-color="#1c4472"/><stop offset="100%" stop-color="#081c38"/>
   </linearGradient>
   <linearGradient id="pm" x1="0" y1="0" x2="0" y2="1">
-    <stop offset="0%"   stop-color="#0a182e"/><stop offset="50%"  stop-color="#162a4c"/><stop offset="100%" stop-color="#071220"/>
+    <stop offset="0%" stop-color="#0a182e"/><stop offset="50%" stop-color="#162a4c"/><stop offset="100%" stop-color="#071220"/>
   </linearGradient>
   <linearGradient id="vl" x1="0" y1="0" x2="1" y2="1">
-    <stop offset="0%"   stop-color="#152858"/><stop offset="100%" stop-color="#0a1838"/>
+    <stop offset="0%" stop-color="#152858"/><stop offset="100%" stop-color="#0a1838"/>
   </linearGradient>
   <!-- Filters -->
   <filter id="gl" x="-50%" y="-50%" width="200%" height="200%">
@@ -48,32 +48,38 @@
 
 <!-- PIPES -->
 <g id="pipes">
+  <!-- Yellow 1: DMF to PP1 suction line -->
+  <rect x="88" y="405" width="13" height="60" fill="url(#pV)" rx="3"/>
+  <rect x="88" y="465" width="20" height="13" fill="url(#pH)"/>
+
   <!-- Bottom Feed Line -->
   <rect x="105" y="400" width="317" height="13" fill="url(#pH)" rx="3"/>
   
-  <!-- Left Vertical Bypass (starts at x=220) -->
+  <!-- Left Vertical Bypass -->
   <rect x="220" y="195" width="13" height="205" fill="url(#pV)" rx="3"/>
-  <rect x="220" y="195" width="165" height="13" fill="url(#pH)" rx="3"/> <!-- horizontal to HIGHER side port -->
+  <rect x="220" y="195" width="165" height="13" fill="url(#pH)" rx="3"/>
 
-  <!-- Top Outlet -->
+  <!-- Top Outlet Header (Yellow 3: Dropping to UF Storage) -->
   <rect x="424" y="140" width="13" height="30" fill="url(#pV)"/>
-  <rect x="424" y="140" width="375" height="13" fill="url(#pH)" rx="3"/> 
+  <rect x="424" y="140" width="426" height="13" fill="url(#pH)" rx="3"/> 
+  <rect x="845" y="140" width="13" height="188" fill="url(#pV)" rx="3"/> <!-- header drops to tank top -->
 
   <!-- Bottom Permeate Line -->
-  <rect x="422" y="400" width="388" height="13" fill="url(#pH)" rx="3"/>
-  <rect x="650" y="413" width="13" height="65" fill="url(#pV)" rx="3"/> <!-- drain drop -->
+  <rect x="422" y="400" width="390" height="13" fill="url(#pH)" rx="3"/>
+  
+  <!-- RED MARK: Shifted Drain (now at x=740, between vertical and storage) -->
+  <rect x="740" y="413" width="13" height="65" fill="url(#pV)" rx="3"/>
 
-  <!-- Right Vertical (connects permeate to higher side port) at x=680 -->
+  <!-- Right Vertical (V4 column) -->
   <rect x="680" y="195" width="13" height="205" fill="url(#pV)" rx="3"/>
-  <rect x="480" y="195" width="200" height="13" fill="url(#pH)" rx="3"/> <!-- horizontal to HIGHER side port -->
+  <rect x="480" y="195" width="200" height="13" fill="url(#pH)" rx="3"/>
 
-  <!-- Right-most Tank Column -->
-  <rect x="800" y="153" width="13" height="175" fill="url(#pV)" rx="3"/>
-  <rect x="740" y="328" width="60" height="13" fill="url(#pH)" rx="3"/> <!-- output to storage -->
+  <!-- Yellow 2: PP2 to UF Storage connection -->
+  <rect x="740" y="328" width="75" height="13" fill="url(#pH)" rx="3"/>
 
   <!-- Corner Elbows -->
   <rect x="220" y="195" width="13" height="13" fill="#0d2a4a"/>
-  <rect x="800" y="140" width="13" height="13" fill="#0d2a4a"/>
+  <rect x="845" y="140" width="13" height="13" fill="#0d2a4a"/>
   <rect x="680" y="195" width="13" height="13" fill="#0d2a4a"/>
 </g>
 
@@ -82,7 +88,6 @@
   <rect x="-8" y="14" width="108" height="9" fill="url(#fl)" stroke="#1c4270" stroke-width="1" rx="1"/>
   <ellipse cx="46" cy="16" rx="46" ry="13" fill="#1a4272" stroke="#1e4a7e" stroke-width="1.5"/>
   <rect x="5" y="15" width="82" height="215" fill="url(#uf)" stroke="#1a4272" stroke-width="2" rx="5"/>
-  <!-- HIGHER Side port stubs (y=25 rel -> y=195 abs) -->
   <rect x="-18" y="25" width="23" height="13" fill="url(#pV)" stroke="#1a4272" stroke-width="1" rx="1"/>
   <rect x="87" y="25" width="23" height="13" fill="url(#pV)" stroke="#1a4272" stroke-width="1" rx="1"/>
   <ellipse cx="46" cy="230" rx="46" ry="13" fill="#060f20" stroke="#1a4272" stroke-width="1.5"/>
@@ -105,7 +110,7 @@
   <ellipse cx="42" cy="98" rx="42" ry="14" fill="#050e1c" stroke="#1a4272" stroke-width="1.5"/>
   <text x="42" y="55" text-anchor="middle" font-size="11" font-weight="700" fill="#cce0f4">UF STORAGE</text>
 </g>
-<g transform="translate(618,478)" filter="url(#sh)">
+<g transform="translate(708,478)" filter="url(#sh)">
   <rect x="0" y="8" width="76" height="42" fill="#08080f" stroke="#181830" stroke-width="1.5" rx="4"/>
   <ellipse cx="38" cy="8" rx="38" ry="9" fill="#0e0e20" stroke="#181830" stroke-width="1.5"/>
   <text x="38" y="31" text-anchor="middle" font-size="12" font-weight="700" fill="#3c3c58">DRAIN</text>
