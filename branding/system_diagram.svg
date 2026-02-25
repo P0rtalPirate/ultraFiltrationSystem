@@ -1,107 +1,151 @@
-<svg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
-  <!-- Background -->
-  <rect width="800" height="600" fill="#0a192f" rx="20"/>
-  
-  <!-- Title -->
-  <text x="400" y="50" text-anchor="middle" font-family="Segoe UI, Arial" font-size="32" fill="#ffffff" font-weight="bold">UF SYSTEM DRAWING</text>
-  <text x="400" y="80" text-anchor="middle" font-family="Segoe UI, Arial" font-size="16" fill="#64ffda">Raj Enterprices - Professional Process Control</text>
-
-  <!-- Symbols Definitions -->
+<svg width="1000" height="700" viewBox="0 0 1000 700" xmlns="http://www.w3.org/2000/svg">
+  <!-- Gradients Definition -->
   <defs>
-    <!-- Valve symbol: two triangles meeting at a point -->
-    <g id="valve-sym">
-      <polygon points="0,0 24,12 0,24 24,0" fill="#f06292" stroke="#ffffff" stroke-width="1.5"/>
-      <rect x="10" y="-4" width="4" height="6" fill="#ffffff" rx="1"/>
-    </g>
-    <!-- Pump symbol: circle with an X -->
-    <g id="pump-sym">
-      <circle cx="0" cy="0" r="24" fill="#4fc3f7" stroke="#ffffff" stroke-width="2"/>
-      <path d="M -12 -12 L 12 12 M -12 12 L 12 -12" stroke="#0a192f" stroke-width="3"/>
-    </g>
-    <!-- Tank symbol: cylinder -->
-    <g id="tank-sym">
-      <rect x="-60" y="0" width="120" height="80" fill="#112240" stroke="#8892b0" stroke-width="3" rx="10"/>
-      <ellipse cx="0" cy="0" rx="60" ry="15" fill="#1e3a8a" stroke="#8892b0" stroke-width="3"/>
-    </g>
+    <linearGradient id="tankGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#4a90e2;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2a5a9a;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="ufGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#3a7ec2;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#62a8ed;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#3a7ec2;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="pipeGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#4a90e2;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#c8e1ff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#4a90e2;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="pumpGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#333;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#666;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3" />
+      <feOffset dx="2" dy="2" result="offsetblur" />
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.5" />
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
   </defs>
 
-  <!-- Main UF Vessel -->
-  <g transform="translate(400, 180)">
-    <rect x="-50" y="0" width="100" height="250" rx="20" fill="#112240" stroke="#64ffda" stroke-width="4"/>
-    <text x="0" y="130" text-anchor="middle" font-family="Arial" font-size="28" fill="#64ffda" font-weight="bold">UF</text>
-    <!-- Vessel Caps -->
-    <ellipse cx="0" cy="0" rx="50" ry="18" fill="#1e3a8a" stroke="#64ffda" stroke-width="3"/>
-    <ellipse cx="0" cy="250" rx="50" ry="18" fill="#1e3a8a" stroke="#64ffda" stroke-width="3"/>
+  <!-- Background -->
+  <rect width="1000" height="700" fill="#ffffff" />
+  
+  <!-- Title -->
+  <text x="500" y="60" text-anchor="middle" font-family="Arial, sans-serif" font-size="48" fill="#000000" font-weight="bold">UF SYSTEM DRAWING</text>
+
+  <!-- PIPING SYSTEM -->
+  <g stroke="#3a7ec2" stroke-width="8" fill="none" stroke-linejoin="round" stroke-linecap="round">
+    <!-- Path from PP1 split to Bottom UF -->
+    <path d="M 130 540 L 465 540" /> 
+    <!-- Path to V2 Vertical -->
+    <path d="M 285 540 L 285 220 L 465 220" />
+    <!-- Path from UF Bottom to Drain/Storage -->
+    <path d="M 535 540 L 820 540" />
+    <!-- Drain Vertical -->
+    <path d="M 780 540 L 780 620" />
+    <!-- V4 Vertical -->
+    <path d="M 720 540 L 720 220 L 750 220" />
+    <!-- Top Manifold -->
+    <path d="M 500 120 L 500 100 L 910 100 L 910 260 L 870 260" />
+    <!-- V4 extension to Top -->
+    <path d="M 810 220 L 810 100" />
+    <!-- PP2 Loop -->
+    <path d="M 810 320 L 810 100" />
   </g>
 
+  <!-- UF VESSEL (Large Center) -->
+  <g transform="translate(465, 120)" filter="url(#shadow)">
+    <!-- Main Body -->
+    <rect x="0" y="30" width="70" height="390" fill="url(#ufGrad)" stroke="#1a4b8a" stroke-width="2" />
+    <!-- Top Cap -->
+    <ellipse cx="35" cy="30" rx="35" ry="15" fill="#4a90e2" stroke="#1a4b8a" stroke-width="2" />
+    <!-- Bottom Ring Area -->
+    <rect x="-5" y="420" width="80" height="30" rx="5" fill="#2a5a9a" stroke="#1a4b8a" stroke-width="2" />
+    <ellipse cx="35" cy="450" rx="35" ry="10" fill="#2a5a9a" stroke="#1a4b8a" stroke-width="2" />
+    <text x="35" y="235" text-anchor="middle" font-family="Arial" font-size="24" fill="#ffffff" font-weight="bold">UF</text>
+    <!-- Ports -->
+    <rect x="25" y="-20" width="20" height="50" fill="url(#ufGrad)" />
+  </g>
+
+  <!-- TANKS -->
   <!-- DMF STORAGE (Bottom Left) -->
-  <g transform="translate(150, 480)">
-    <use href="#tank-sym"/>
-    <text y="50" text-anchor="middle" font-family="Arial" font-size="14" fill="#ffffff" font-weight="bold">DMF STORAGE</text>
+  <g transform="translate(120, 580)" filter="url(#shadow)">
+    <rect x="0" y="0" width="160" height="100" rx="10" fill="url(#tankGrad)" stroke="#1a4b8a" stroke-width="2" />
+    <ellipse cx="80" cy="0" rx="80" ry="20" fill="#4a90e2" stroke="#1a4b8a" stroke-width="2" />
+    <text x="80" y="55" text-anchor="middle" font-family="Arial" font-size="18" fill="#000000" font-weight="bold">DMF</text>
+    <text x="80" y="80" text-anchor="middle" font-family="Arial" font-size="18" fill="#000000" font-weight="bold">STORAGE</text>
   </g>
 
   <!-- UF STORAGE TANK (Middle Right) -->
-  <g transform="translate(680, 320)">
-    <use href="#tank-sym" transform="scale(1.2)"/>
-    <text y="60" text-anchor="middle" font-family="Arial" font-size="14" fill="#ffffff" font-weight="bold">UF STORAGE TANK</text>
+  <g transform="translate(820, 380)" filter="url(#shadow)">
+    <rect x="0" y="0" width="160" height="120" rx="10" fill="url(#tankGrad)" stroke="#1a4b8a" stroke-width="2" />
+    <ellipse cx="80" cy="0" rx="80" ry="20" fill="#4a90e2" stroke="#1a4b8a" stroke-width="2" />
+    <text x="80" y="65" text-anchor="middle" font-family="Arial" font-size="18" fill="#000000" font-weight="bold">UF STORAGE</text>
+    <text x="80" y="90" text-anchor="middle" font-family="Arial" font-size="18" fill="#000000" font-weight="bold">TANK</text>
+    <!-- Pipe into tank -->
+    <rect x="75" y="-60" width="10" height="60" fill="#3a7ec2" />
   </g>
 
   <!-- DRAIN (Bottom Right) -->
-  <g transform="translate(640, 520)">
-    <rect x="-40" y="0" width="80" height="40" rx="10" fill="#112240" stroke="#495670" stroke-width="3"/>
-    <text y="25" text-anchor="middle" font-family="Arial" font-size="14" fill="#8892b0" font-weight="bold">DRAIN</text>
+  <g transform="translate(740, 650)" filter="url(#shadow)">
+    <rect x="0" y="0" width="120" height="50" fill="url(#tankGrad)" rx="5" stroke="#1a4b8a" stroke-width="2" />
+    <ellipse cx="60" cy="0" rx="60" ry="10" fill="#4a90e2" stroke="#1a4b8a" stroke-width="2" />
+    <text x="60" y="32" text-anchor="middle" font-family="Arial" font-size="18" fill="#ffffff" font-weight="bold">DRAIN</text>
   </g>
 
-  <!-- === PIPING & COMPONENTS === -->
+  <!-- PUMPS -->
+  <!-- PP1 -->
+  <g transform="translate(50, 540)" filter="url(#shadow)">
+    <rect x="0" y="-30" width="80" height="60" rx="15" fill="#2a5a9a" />
+    <rect x="10" y="-35" width="60" height="50" rx="5" fill="#3a7ec2" />
+    <!-- Ridges for cooling -->
+    <line x1="15" y1="-25" x2="15" y2="5" stroke="#1a4b8a" stroke-width="2" />
+    <line x1="25" y1="-25" x2="25" y2="5" stroke="#1a4b8a" stroke-width="2" />
+    <line x1="35" y1="-25" x2="35" y2="5" stroke="#1a4b8a" stroke-width="2" />
+    <text x="0" y="-45" font-family="Arial" font-size="20" font-weight="bold">PP1</text>
+    <!-- Connection to DMF -->
+    <path d="M 80 0 L 100 0 L 100 40" stroke="#3a7ec2" stroke-width="6" fill="none" />
+  </g>
 
-  <!-- 1. PP1 Path -->
-  <path d="M 150 480 L 150 450 L 80 450" stroke="#64ffda" stroke-width="5" fill="none"/>
-  <use href="#pump-sym" x="80" y="450"/>
-  <text x="80" y="410" text-anchor="middle" font-family="Arial" font-size="14" fill="#4fc3f7" font-weight="bold">PP1</text>
-  
-  <!-- Line from PP1 to split -->
-  <path d="M 80 450 L 250 450" stroke="#64ffda" stroke-width="5" fill="none"/>
-  
-  <!-- Path to V1 (Bottom) -->
-  <path d="M 250 450 L 400 450 L 400 430" stroke="#64ffda" stroke-width="5" fill="none"/>
-  <use href="#valve-sym" x="300" y="438"/>
-  <text x="312" y="430" text-anchor="middle" font-family="Arial" font-size="16" fill="#ffffff" font-weight="bold">V1</text>
+  <!-- PP2 -->
+  <g transform="translate(770, 320)" filter="url(#shadow)">
+    <rect x="0" y="-30" width="80" height="60" rx="15" fill="#2a5a9a" />
+    <rect x="10" y="-35" width="60" height="50" rx="5" fill="#3a7ec2" />
+    <text x="40" y="-45" font-family="Arial" font-size="20" font-weight="bold" text-anchor="middle">PP2</text>
+    <!-- Connection -->
+    <path d="M 80 0 L 100 0 L 100 60" stroke="#3a7ec2" stroke-width="6" fill="none" />
+  </g>
 
-  <!-- Path to V2 (Up to Horizontal) -->
-  <path d="M 250 450 L 250 220 L 580 220" stroke="#64ffda" stroke-width="5" fill="none"/>
-  <use href="#valve-sym" x="238" y="320" transform="rotate(-90, 250, 332)"/>
-  <text x="230" y="332" text-anchor="end" font-family="Arial" font-size="16" fill="#ffffff" font-weight="bold">V2</text>
+  <!-- VALVES (V1 - V5) -->
+  <g font-family="Arial" font-size="18" font-weight="bold" fill="#000000">
+    <!-- V1 -->
+    <rect x="335" y="525" width="30" height="30" fill="#4a90e2" stroke="#1a4b8a" rx="3" />
+    <text x="350" y="515" text-anchor="middle">V1</text>
+    
+    <!-- V2 -->
+    <rect x="270" y="320" width="30" height="30" fill="#4a90e2" stroke="#1a4b8a" rx="3" />
+    <text x="310" y="340">V2</text>
 
-  <!-- 2. Bottom Exit Path -->
-  <path d="M 400 430 L 400 450 L 640 450 L 640 520" stroke="#64ffda" stroke-width="5" fill="none"/>
-  <use href="#valve-sym" x="520" y="438"/>
-  <text x="532" y="430" text-anchor="middle" font-family="Arial" font-size="16" fill="#ffffff" font-weight="bold">V3</text>
+    <!-- V3 -->
+    <rect x="640" y="525" width="30" height="30" fill="#4a90e2" stroke="#1a4b8a" rx="3" />
+    <text x="655" y="515" text-anchor="middle">V3</text>
 
-  <!-- Path to V4 (Up from Bottom Exit) -->
-  <path d="M 580 450 L 580 220" stroke="#64ffda" stroke-width="5" fill="none"/>
-  <use href="#valve-sym" x="568" y="380" transform="rotate(-90, 580, 392)"/>
-  <text x="595" y="392" text-anchor="start" font-family="Arial" font-size="16" fill="#ffffff" font-weight="bold">V4</text>
+    <!-- V4 -->
+    <rect x="705" y="320" width="30" height="30" fill="#4a90e2" stroke="#1a4b8a" rx="3" />
+    <text x="745" y="340">V4</text>
 
-  <!-- Junctions on horizontal manifolds -->
-  <circle cx="580" cy="220" r="6" fill="#64ffda"/>
-  <circle cx="250" cy="220" r="6" fill="#64ffda"/>
+    <!-- V5 -->
+    <rect x="865" y="85" width="45" height="45" fill="#2a5a9a" stroke="#1a4b8a" rx="5" />
+    <text x="887" y="115" text-anchor="middle" fill="#ffffff">V5</text>
+  </g>
 
-  <!-- 3. Top Horizontal Manifold -->
-  <path d="M 400 162 L 400 130 L 700 130 L 700 240" stroke="#64ffda" stroke-width="8" fill="none"/>
-  <use href="#valve-sym" x="650" y="118"/>
-  <text x="662" y="110" text-anchor="middle" font-family="Arial" font-size="16" fill="#ffffff" font-weight="bold">V5</text>
-
-  <!-- Connection from V2/V4 line to Top Manifold -->
-  <path d="M 580 220 L 580 130" stroke="#64ffda" stroke-width="5" fill="none"/>
-  <circle cx="580" cy="130" r="6" fill="#64ffda"/>
-
-  <!-- 4. PP2 Backwash Path -->
-  <path d="M 680 320 L 620 320 L 620 130" stroke="#4fc3f7" stroke-width="4" fill="none" stroke-dasharray="8,4"/>
-  <use href="#pump-sym" x="620" y="280" transform="rotate(-90, 620, 280)"/>
-  <text x="655" y="285" text-anchor="start" font-family="Arial" font-size="14" fill="#4fc3f7" font-weight="bold">PP2</text>
-  
-  <!-- Backwash Valve (Unlabeled in drawing but visible) -->
-  <rect x="610" y="180" width="20" height="24" fill="#495670" stroke="#ffffff" stroke-width="1"/>
-  <circle cx="620" cy="130" r="5" fill="#4fc3f7"/>
+  <!-- Additional Components -->
+  <!-- Check valve / flow indicator on PP2 line -->
+  <rect x="800" y="240" width="20" height="30" fill="#4a90e2" stroke="#1a4b8a" />
 
 </svg>

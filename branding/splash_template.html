@@ -9,8 +9,8 @@
         body {
             margin: 0;
             padding: 0;
-            background-color: #0a192f;
-            color: white;
+            background-color: #ffffff;
+            color: #333;
             font-family: 'Segoe UI', Arial, sans-serif;
             width: 800px;
             height: 480px;
@@ -19,30 +19,30 @@
             align-items: center;
             justify-content: space-between;
             overflow: hidden;
-            border: 4px solid #112240;
+            border: 8px solid #2a5a9a;
             box-sizing: border-box;
         }
 
         .header {
             text-align: center;
-            margin-top: 30px;
+            margin-top: 20px;
         }
 
         h1 {
-            font-size: 42px;
+            font-size: 38px;
             margin: 0;
             font-weight: 800;
-            letter-spacing: 4px;
-            color: #ffffff;
+            letter-spacing: 2px;
+            color: #1a4b8a;
             text-transform: uppercase;
         }
 
         h2 {
-            font-size: 18px;
+            font-size: 16px;
             margin: 5px 0 0 0;
-            color: #64ffda;
+            color: #4a90e2;
             font-weight: 400;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
         }
 
         .diagram-container {
@@ -51,57 +51,14 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            padding: 10px;
         }
 
         .footer {
-            margin-bottom: 25px;
-            font-size: 18px;
-            color: #8892b0;
+            margin-bottom: 20px;
+            font-size: 16px;
+            color: #666;
             font-weight: 500;
-        }
-
-        /* SVG Styling */
-        .p-main {
-            stroke: #64ffda;
-            stroke-width: 4;
-            fill: none;
-        }
-
-        .p-sec {
-            stroke: #4fc3f7;
-            stroke-width: 3;
-            fill: none;
-            stroke-dasharray: 6, 3;
-        }
-
-        .node {
-            fill: #112240;
-            stroke: #64ffda;
-            stroke-width: 2.5;
-        }
-
-        .v-box {
-            fill: #f06292;
-            stroke: #ffffff;
-            stroke-width: 1.5;
-        }
-
-        .p-box {
-            fill: #4fc3f7;
-            stroke: #ffffff;
-            stroke-width: 1.5;
-        }
-
-        .lbl {
-            font-size: 13px;
-            fill: #ccd6f6;
-            font-weight: bold;
-        }
-
-        .sub-lbl {
-            font-size: 11px;
-            fill: #8892b0;
-            font-weight: bold;
         }
     </style>
 </head>
@@ -109,78 +66,93 @@
 <body>
     <div class="header">
         <h1>Raj Enterprices</h1>
-        <h2>UltraFiltration Control System</h2>
+        <h2>Professional UltraFiltration Control</h2>
     </div>
 
     <div class="diagram-container">
-        <svg width="650" height="300" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid meet">
-            <!-- Reuse Symbol Logic from system_diagram.svg -->
+        <!-- Scaled version of the 3D SVG -->
+        <svg width="700" height="320" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid meet"
+            xmlns="http://www.w3.org/2000/svg">
             <defs>
-                <g id="v-sym">
-                    <polygon points="0,0 20,10 0,20 20,0" class="v-box" />
-                </g>
-                <g id="p-sym">
-                    <circle cx="0" cy="0" r="18" class="p-box" />
-                    <path d="M -8 -8 L 8 8 M -8 8 L 8 -8" stroke="#0a192f" stroke-width="2" />
-                </g>
-                <g id="t-sym">
-                    <rect x="-40" y="0" width="80" height="50" class="node" rx="5" />
-                    <ellipse cx="0" cy="0" rx="40" ry="8" style="fill:#1e3a8a; stroke:#8892b0; stroke-width:2" />
-                </g>
+                <linearGradient id="tankGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" style="stop-color:#4a90e2;stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:#2a5a9a;stop-opacity:1" />
+                </linearGradient>
+                <linearGradient id="ufGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" style="stop-color:#3a7ec2;stop-opacity:1" />
+                    <stop offset="50%" style="stop-color:#62a8ed;stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:#3a7ec2;stop-opacity:1" />
+                </linearGradient>
+                <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+                    <feGaussianBlur in="SourceAlpha" stdDeviation="3" />
+                    <feOffset dx="2" dy="2" result="offsetblur" />
+                    <feComponentTransfer>
+                        <feFuncA type="linear" slope="0.5" />
+                    </feComponentTransfer>
+                    <feMerge>
+                        <feMergeNode />
+                        <feMergeNode in="SourceGraphic" />
+                    </feMerge>
+                </filter>
             </defs>
 
-            <!-- UF Vessel -->
-            <g transform="translate(400, 100)">
-                <rect x="-40" y="0" width="80" height="180" rx="15" class="node" />
-                <text x="0" y="100" text-anchor="middle" class="lbl" style="font-size: 18px; fill: #64ffda;">UF</text>
-                <ellipse cx="0" cy="0" rx="40" ry="12" style="fill:#1e3a8a; stroke:#64ffda; stroke-width:2" />
-                <ellipse cx="0" cy="180" rx="40" ry="12" style="fill:#1e3a8a; stroke:#64ffda; stroke-width:2" />
+            <!-- PIPING -->
+            <g stroke="#3a7ec2" stroke-width="10" fill="none" stroke-linejoin="round" stroke-linecap="round">
+                <path d="M 130 500 L 465 500" />
+                <path d="M 285 500 L 285 220 L 465 220" />
+                <path d="M 535 500 L 820 500" />
+                <path d="M 780 500 L 780 560" />
+                <path d="M 720 500 L 720 220 L 750 220" />
+                <path d="M 500 120 L 500 100 L 910 100 L 910 260 L 870 260" />
+                <path d="M 810 220 L 810 100" />
             </g>
 
-            <!-- Feed Path (PP1) -->
-            <g transform="translate(150, 320)">
-                <use href="#t-sym" />
-                <text y="35" text-anchor="middle" class="sub-lbl">DMF STORAGE</text>
+            <!-- UF VESSEL -->
+            <g transform="translate(465, 120)" filter="url(#shadow)">
+                <rect x="0" y="30" width="70" height="350" fill="url(#ufGrad)" stroke="#1a4b8a" stroke-width="2" />
+                <ellipse cx="35" cy="30" rx="35" ry="15" fill="#4a90e2" stroke="#1a4b8a" stroke-width="2" />
+                <rect x="-5" y="380" width="80" height="30" rx="5" fill="#2a5a9a" stroke="#1a4b8a" stroke-width="2" />
+                <ellipse cx="35" cy="410" rx="35" ry="10" fill="#2a5a9a" stroke="#1a4b8a" stroke-width="2" />
+                <text x="35" y="210" text-anchor="middle" font-family="Arial" font-size="24" fill="#ffffff"
+                    font-weight="bold">UF</text>
             </g>
-            <path d="M 150 320 L 150 300 L 80 300" class="p-main" />
-            <use href="#p-sym" x="80" y="300" />
-            <text x="80" y="340" text-anchor="middle" class="sub-lbl">PP1</text>
 
-            <path d="M 80 300 L 250 300" class="p-main" />
+            <!-- TANKS -->
+            <g transform="translate(100, 520)" filter="url(#shadow)">
+                <rect x="0" y="0" width="140" height="80" rx="10" fill="url(#tankGrad)" stroke="#1a4b8a"
+                    stroke-width="2" />
+                <ellipse cx="70" cy="0" rx="70" ry="15" fill="#4a90e2" stroke="#1a4b8a" stroke-width="2" />
+                <text x="70" y="45" text-anchor="middle" font-family="Arial" font-size="16" fill="#000"
+                    font-weight="bold">DMF STORAGE</text>
+            </g>
 
-            <!-- V1 to Bottom -->
-            <path d="M 250 300 L 400 300 L 400 285" class="p-main" />
-            <use href="#v-sym" x="300" y="290" />
-            <text x="310" y="280" text-anchor="middle" class="lbl">V1</text>
+            <g transform="translate(820, 360)" filter="url(#shadow)">
+                <rect x="0" y="0" width="160" height="100" rx="10" fill="url(#tankGrad)" stroke="#1a4b8a"
+                    stroke-width="2" />
+                <ellipse cx="80" cy="0" rx="80" ry="18" fill="#4a90e2" stroke="#1a4b8a" stroke-width="2" />
+                <text x="80" y="55" text-anchor="middle" font-family="Arial" font-size="16" fill="#000"
+                    font-weight="bold">UF STORAGE</text>
+            </g>
 
-            <!-- V2 to Top -->
-            <path d="M 250 300 L 250 140 L 580 140" class="p-main" />
-            <use href="#v-sym" x="240" y="210" transform="rotate(-90, 250, 220)" />
-            <text x="230" y="220" text-anchor="end" class="lbl">V2</text>
+            <!-- PUMPS -->
+            <g transform="translate(50, 500)" filter="url(#shadow)">
+                <rect x="0" y="-25" width="70" height="50" rx="10" fill="#2a5a9a" />
+                <text x="35" y="8" text-anchor="middle" fill="#fff" font-weight="bold">PP1</text>
+            </g>
 
-            <!-- Bottom Exit (V3) -->
-            <path d="M 400 285 L 400 300 L 640 300 L 640 350" class="p-main" />
-            <use href="#v-sym" x="500" y="290" />
-            <text x="510" y="280" text-anchor="middle" class="lbl">V3</text>
-            <text x="640" y="380" text-anchor="middle" class="sub-lbl">DRAIN</text>
+            <g transform="translate(775, 290)" filter="url(#shadow)">
+                <rect x="0" y="-25" width="70" height="50" rx="10" fill="#2a5a9a" />
+                <text x="35" y="8" text-anchor="middle" fill="#fff" font-weight="bold">PP2</text>
+            </g>
 
-            <!-- V4 Bypass -->
-            <path d="M 580 300 L 580 140" class="p-main" />
-            <use href="#v-sym" x="571" y="240" transform="rotate(-90, 580, 250)" />
-            <text x="595" y="250" text-anchor="start" class="lbl">V4</text>
-
-            <!-- Top Manifold & V5 -->
-            <path d="M 400 90 L 400 60 L 700 60 L 700 180" class="p-main" />
-            <use href="#v-sym" x="630" y="50" />
-            <text x="640" y="40" text-anchor="middle" class="lbl">V5</text>
-            <text x="700" y="210" text-anchor="middle" class="sub-lbl">STORAGE</text>
-            <path d="M 580 140 L 580 60" class="p-main" />
-
-            <!-- PP2 (Backwash) -->
-            <path d="M 700 230 L 620 230 L 620 60" class="p-sec" />
-            <use href="#p-sym" x="620" y="160" transform="rotate(-90, 620, 160)" />
-            <text x="645" y="165" text-anchor="start" class="sub-lbl" style="fill:#4fc3f7">PP2</text>
-
+            <!-- VALVES -->
+            <g fill="#4a90e2" stroke="#1a4b8a" stroke-width="2">
+                <rect x="335" y="485" width="30" height="30" rx="3" />
+                <rect x="270" y="300" width="30" height="30" rx="3" />
+                <rect x="640" y="485" width="30" height="30" rx="3" />
+                <rect x="705" y="300" width="30" height="30" rx="3" />
+                <rect x="870" y="85" width="40" height="40" rx="5" style="fill:#1a4b8a" />
+            </g>
         </svg>
     </div>
 
