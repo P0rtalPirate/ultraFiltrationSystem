@@ -62,8 +62,8 @@
   <!-- Top Outlet Header -->
   <rect x="424" y="140" width="13" height="30" fill="url(#pV)"/>
   <rect x="424" y="140" width="426" height="13" fill="url(#pH)" rx="3"/> 
-  <rect x="780" y="140" width="13" height="154" fill="url(#pV)" rx="3"/> <!-- Link from Header to PP2 (Yellow) -->
-  <rect x="845" y="140" width="13" height="188" fill="url(#pV)" rx="3"/> <!-- Final drop -->
+  <rect x="780" y="140" width="13" height="160" fill="url(#pV)" rx="3"/> <!-- Vertical Suction to PP2 -->
+  <rect x="845" y="140" width="13" height="188" fill="url(#pV)" rx="3"/> <!-- Final bypass drop -->
 
   <!-- Bottom Permeate Line (Ends at Drain) -->
   <rect x="422" y="400" width="330" height="13" fill="url(#pH)" rx="3"/>
@@ -71,8 +71,9 @@
   <!-- Drain (at x=740) -->
   <rect x="740" y="413" width="13" height="65" fill="url(#pV)" rx="3"/>
 
-  <!-- PP2 discharge to Storage (Yellow Mark) -->
-  <rect x="780" y="300" width="40" height="13" fill="url(#pH)" rx="3"/>
+  <!-- PP2 discharge to Tank (Connect the flow) -->
+  <rect x="792" y="301" width="35" height="13" fill="url(#pH)" rx="3"/>
+  <rect x="821" y="301" width="13" height="35" fill="url(#pV)" rx="3"/>
   
   <!-- Right Vertical (V4 column) -->
   <rect x="680" y="195" width="13" height="205" fill="url(#pV)" rx="3"/>
