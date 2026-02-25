@@ -49,35 +49,35 @@
 <!-- PIPES -->
 <g id="pipes">
   <!-- DMF Suction -->
-  <rect x="88" y="405" width="13" height="60" fill="url(#pV)" rx="3"/>
-  <rect x="88" y="465" width="20" height="13" fill="url(#pH)"/>
+  <rect id="p_dmf_suction_v" x="88" y="405" width="13" height="60" fill="url(#pV)" rx="3"/>
+  <rect id="p_dmf_suction_h" x="88" y="465" width="20" height="13" fill="url(#pH)"/>
 
   <!-- Bottom Feed Line -->
-  <rect x="105" y="400" width="317" height="13" fill="url(#pH)" rx="3"/>
+  <rect id="p_feed_line" x="105" y="400" width="317" height="13" fill="url(#pH)" rx="3"/>
   
   <!-- Left Vertical Bypass -->
-  <rect x="220" y="195" width="13" height="205" fill="url(#pV)" rx="3"/>
-  <rect x="220" y="195" width="165" height="13" fill="url(#pH)" rx="3"/>
+  <rect id="p_bypass_v" x="220" y="195" width="13" height="205" fill="url(#pV)" rx="3"/>
+  <rect id="p_bypass_h" x="220" y="195" width="165" height="13" fill="url(#pH)" rx="3"/>
 
   <!-- Top Outlet Header -->
-  <rect x="424" y="140" width="13" height="30" fill="url(#pV)"/>
-  <rect x="424" y="140" width="426" height="13" fill="url(#pH)" rx="3"/> 
-  <rect x="780" y="140" width="13" height="160" fill="url(#pV)" rx="3"/> <!-- Vertical Suction to PP2 -->
-  <rect x="845" y="140" width="13" height="188" fill="url(#pV)" rx="3"/> <!-- Final bypass drop -->
+  <rect id="p_header_v" x="424" y="140" width="13" height="30" fill="url(#pV)"/>
+  <rect id="p_header_h" x="424" y="140" width="426" height="13" fill="url(#pH)" rx="3"/> 
+  <rect id="p_pp2_suction" x="780" y="140" width="13" height="160" fill="url(#pV)" rx="3"/> <!-- Vertical Suction to PP2 -->
+  <rect id="p_bypass_drop" x="845" y="140" width="13" height="188" fill="url(#pV)" rx="3"/> <!-- Final bypass drop -->
 
   <!-- Bottom Permeate Line (Ends at Drain) -->
-  <rect x="422" y="400" width="330" height="13" fill="url(#pH)" rx="3"/>
+  <rect id="p_permeate" x="422" y="400" width="330" height="13" fill="url(#pH)" rx="3"/>
   
   <!-- Drain (at x=740) -->
-  <rect x="740" y="413" width="13" height="65" fill="url(#pV)" rx="3"/>
+  <rect id="p_drain" x="740" y="413" width="13" height="65" fill="url(#pV)" rx="3"/>
 
   <!-- PP2 discharge to Tank (Connect the flow) -->
-  <rect x="792" y="301" width="35" height="13" fill="url(#pH)" rx="3"/>
-  <rect x="821" y="301" width="13" height="35" fill="url(#pV)" rx="3"/>
+  <rect id="p_pp2_disch_h" x="792" y="301" width="35" height="13" fill="url(#pH)" rx="3"/>
+  <rect id="p_pp2_disch_v" x="821" y="301" width="13" height="35" fill="url(#pV)" rx="3"/>
   
   <!-- Right Vertical (V4 column) -->
-  <rect x="680" y="195" width="13" height="205" fill="url(#pV)" rx="3"/>
-  <rect x="480" y="195" width="200" height="13" fill="url(#pH)" rx="3"/>
+  <rect id="p_v4_col" x="680" y="195" width="13" height="205" fill="url(#pV)" rx="3"/>
+  <rect id="p_v4_h" x="480" y="195" width="200" height="13" fill="url(#pH)" rx="3"/>
 
   <!-- Corner Elbows -->
   <rect x="220" y="195" width="13" height="13" fill="#0d2a4a"/>
@@ -102,12 +102,14 @@
 <!-- TANKS -->
 <g transform="translate(50,450)" filter="url(#sh)">
   <rect x="0" y="16" width="120" height="76" fill="url(#tk)" stroke="#1a4272" stroke-width="2" rx="5"/>
+  <rect id="dmf_level" x="2" y="50" width="116" height="40" fill="#00d4ff" opacity="0.3" rx="3"/>
   <ellipse cx="60" cy="16" rx="60" ry="17" fill="#164465" stroke="#1a4272" stroke-width="2"/>
   <ellipse cx="60" cy="92" rx="60" ry="17" fill="#050e1c" stroke="#1a4272" stroke-width="1.5"/>
   <text x="60" y="54" text-anchor="middle" font-size="14" font-weight="700" fill="#cce0f4">DMF STORAGE</text>
 </g>
 <g transform="translate(812,328)" filter="url(#sh)">
   <rect x="0" y="14" width="84" height="84" fill="url(#tk)" stroke="#1a4272" stroke-width="2" rx="5"/>
+  <rect id="uf_level" x="2" y="40" width="80" height="56" fill="#00d4ff" opacity="0.3" rx="3"/>
   <ellipse cx="42" cy="14" rx="42" ry="14" fill="#164465" stroke="#1a4272" stroke-width="2"/>
   <ellipse cx="42" cy="98" rx="42" ry="14" fill="#050e1c" stroke="#1a4272" stroke-width="1.5"/>
   <text x="42" y="55" text-anchor="middle" font-size="11" font-weight="700" fill="#cce0f4">UF STORAGE</text>
