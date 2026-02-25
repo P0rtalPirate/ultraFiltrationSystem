@@ -62,8 +62,8 @@
   <!-- Top Outlet Header -->
   <rect x="424" y="140" width="13" height="30" fill="url(#pV)"/>
   <rect x="424" y="140" width="426" height="13" fill="url(#pH)" rx="3"/> 
-  <rect x="780" y="153" width="13" height="175" fill="url(#pV)" rx="3"/> <!-- RED link with PP2 -->
-  <rect x="845" y="140" width="13" height="188" fill="url(#pV)" rx="3"/> <!-- YELLOW link -->
+  <rect x="780" y="140" width="13" height="154" fill="url(#pV)" rx="3"/> <!-- Link from Header to PP2 (Yellow) -->
+  <rect x="845" y="140" width="13" height="188" fill="url(#pV)" rx="3"/> <!-- Final drop -->
 
   <!-- Bottom Permeate Line (Ends at Drain) -->
   <rect x="422" y="400" width="330" height="13" fill="url(#pH)" rx="3"/>
@@ -154,8 +154,8 @@
   <polygon points="0,0 21,0 10,12" fill="#00d4ff" opacity=".7"/><polygon points="0,28 21,28 10,16" fill="#00d4ff" opacity=".7"/>
   <text x="32" y="18" text-anchor="start" font-size="12" font-weight="700" fill="#bcd6f0">V4</text>
 </g>
-<!-- V5 (Shifted to Far Right) -->
-<g transform="translate(806,132)">
+<!-- V5 (Red Marked Spot) -->
+<g transform="translate(802,132)">
   <rect x="0" y="0" width="34" height="24" fill="#182e60" stroke="#00d4ff" stroke-width="2" rx="3"/>
   <polygon points="0,0 0,24 14,12" fill="#00d4ff" opacity=".7"/><polygon points="34,0 34,24 20,12" fill="#00d4ff" opacity=".7"/>
   <text x="17" y="-7" text-anchor="middle" font-size="13" font-weight="700" fill="#bcd6f0">V5</text>
