@@ -124,6 +124,9 @@ class SvgViewerCanvas(tk.Canvas):
             def ss(v): return float(v) * scale
 
             if tag == "rect":
+                # Skip the SVG border outline rect (fill=none, stroke=dark)
+                if node.get("fill") == "none" and node.get("stroke") == "#101a2e":
+                    return
                 x, y = sx(node.get("x", 0)), sy(node.get("y", 0))
                 w, h = ss(node.get("width", 0)), ss(node.get("height", 0))
                 kw = dict(outline=stroke if stroke else "", width=ss(sw) if sw else 0)
@@ -193,37 +196,21 @@ class SvgViewerCanvas(tk.Canvas):
         for child in root:
             draw(child)
 
-        # ── Company branding watermark (bottom-right) ──────────────────────
-        self._draw_branding(cw, ch)
+        # ── Company branding watermark (top-left, inside diagram area) ────
+        self._draw_branding(cw, ch, scale, ox, oy)
 
-    def _draw_branding(self, cw, ch):
-        """Draw compact company branding overlay in the bottom-right corner."""
-        pad = 14
-        # Droplet logo (simplified path approximation with ovals + arc hint)
-        lx, ly = cw - pad - 120, ch - pad - 38
+    def _draw_branding(self, cw, ch, scale, ox, oy):
+        """Company name only."""
+        lx = 28 * scale + ox
+        ly = 11 * scale + oy
+        lh = 44 * scale   # header zone height
 
-        # Logo droplet shape (small circle + triangle topped)
-        self.create_oval(lx + 2, ly + 10, lx + 22, ly + 30,
-                         fill="#00d4ff", outline="", width=0)
-        self.create_polygon(
-            [lx + 12, ly, lx + 2, ly + 14, lx + 22, ly + 14],
-            fill="#00d4ff", outline="", width=0
-        )
-        # Inner highlight dot
-        self.create_oval(lx + 9, ly + 8, lx + 14, ly + 13,
-                         fill="#0b1020", outline="", width=0)
-
-        # Company name
+        # ── Company name ──────────────────────────────────────────────────────
+        name_size = max(12, round(32 * scale * 0.82))
         self.create_text(
-            lx + 28, ly + 8,
-            text="Raj Enterprices", anchor="nw",
-            fill="#d2e6f6", font=("Segoe UI", 11, "bold")
-        )
-        # Subtitle
-        self.create_text(
-            lx + 28, ly + 24,
-            text="ULTRAFILTRATION SYSTEM", anchor="nw",
-            fill="#00d4ff", font=("Segoe UI", 7, "bold")
+            lx, ly + lh * 0.5,  # Centered vertically in the header zone
+            text="Raj Enterprices", anchor="w",
+            fill="#d4eaf8", font=("Segoe UI", name_size, "bold")
         )
 
 
