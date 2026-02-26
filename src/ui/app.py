@@ -18,6 +18,7 @@ from src.ui.frames.auto_frame import AutoFrame
 from src.ui.frames.select_frame import SelectFrame
 from src.ui.frames.manual_steps_frame import ManualStepsFrame
 from src.ui.frames.edit_frame import EditFrame
+from src.ui.frames.info_frame import InfoFrame
 
 logger = logging.getLogger("UltraFiltration.App")
 
@@ -97,6 +98,7 @@ class App:
             "select":        SelectFrame,
             "manual_steps":  ManualStepsFrame,
             "edit":          EditFrame,
+            "info":          InfoFrame,
         }
         for name, cls in frame_classes.items():
             frame = cls(self._content, self)
@@ -134,6 +136,7 @@ class App:
                 "auto":          "select",
                 "manual_steps":  "select",
                 "edit":          "select",
+                "info":          "select",
             }
             target = back_map.get(self._current_frame, "main")
             self.show_frame(target)

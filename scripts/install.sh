@@ -43,12 +43,71 @@ source venv/bin/activate
 pip install --upgrade pip
 pip install . ordered-set nuitka zstandard  # nuitka and deps for building
 
-# 4. Branded Splash Screen Setup (Optional/Placeholder)
-echo "🎨 Configuring Branding (Raj Enterprices)..."
-if [ -f "branding/logo.png" ]; then
-    echo "🖼️  Setting up logo splash screen..."
-    # Logic to copy logo to plymouth would go here
-    # sudo cp branding/logo.png /usr/share/plymouth/themes/spinner/watermark.png
+# 4. Branded Boot Splash Screen using system_diagram.png
+echo "🎨 Configuring Boot Splash Screen (Raj Enterprices)..."
+
+THEME_DIR="/usr/share/plymouth/themes/ultrafiltration"
+PNG_SRC="$INSTALL_DIR/branding/system_diagram.png"
+
+if [ -f "$PNG_SRC" ]; then
+    echo "   🖼️  system_diagram.png found. Setting up Plymouth theme..."
+
+    # Install Plymouth if not already present
+    sudo apt-get install -y --no-install-recommends plymouth plymouth-themes
+
+    # Create theme directory
+    sudo mkdir -p "$THEME_DIR"
+
+    # Copy diagram image as the splash background
+    sudo cp "$PNG_SRC" "$THEME_DIR/splash.png"
+
+    # Write the Plymouth script (centers the image on-screen)
+    sudo tee "$THEME_DIR/ultrafiltration.script" > /dev/null <<'PLYSCRIPT'
+wallpaper_image = Image("splash.png");
+screen_width = Window.GetWidth();
+screen_height = Window.GetHeight();
+img_width = wallpaper_image.GetWidth();
+img_height = wallpaper_image.GetHeight();
+scale = Math.Min(screen_width / img_width, screen_height / img_height);
+scaled_width = img_width * scale;
+scaled_height = img_height * scale;
+x = (screen_width - scaled_width) / 2;
+y = (screen_height - scaled_height) / 2;
+wallpaper_sprite = Sprite(wallpaper_image.Scale(scaled_width, scaled_height));
+wallpaper_sprite.SetPosition(x, y, -100);
+PLYSCRIPT
+
+    # Write the Plymouth theme config
+    sudo tee "$THEME_DIR/ultrafiltration.plymouth" > /dev/null <<'PLYCONF'
+[Plymouth Theme]
+Name=UltraFiltration
+Description=Raj Entreprices System Diagram Splash
+ModuleName=script
+
+[script]
+ImageDir=/usr/share/plymouth/themes/ultrafiltration
+ScriptFile=/usr/share/plymouth/themes/ultrafiltration/ultrafiltration.script
+PLYCONF
+
+    # Set as the default Plymouth theme
+    sudo plymouth-set-default-theme ultrafiltration
+
+    # Hide boot logs in cmdline.txt
+    CMDLINE="/boot/firmware/cmdline.txt"
+    if [ ! -f "$CMDLINE" ]; then CMDLINE="/boot/cmdline.txt"; fi
+    if [ -f "$CMDLINE" ]; then
+        # Add splash flags (only if not already present)
+        if ! grep -q "quiet" "$CMDLINE"; then
+            sudo sed -i 's/$/ quiet splash plymouth.ignore-serial-consoles logo.nologo vt.global_cursor_default=0/' "$CMDLINE"
+            echo "   ✔  Boot flags added to $CMDLINE"
+        fi
+    fi
+
+    # Regenerate initramfs so Plymouth is included in the boot sequence
+    sudo update-initramfs -u
+    echo "   ✅ Boot splash installed successfully!"
+else
+    echo "   ⚠️  branding/system_diagram.png not found. Skipping splash setup."
 fi
 
 # 5. Nuitka Compilation (The Protection Phase)

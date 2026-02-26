@@ -82,5 +82,22 @@ class SelectFrame(ttk.Frame):
         edit_card.bind("<Button-1>", lambda e: self.app.show_frame("edit"))
         edit_card.config(cursor="hand2")
 
+        # ── System Info / Diagram card ───────────────────────────────
+        info_card = CardFrame(container)
+        info_card.pack(side="left", padx=15, pady=10)
+
+        tk.Label(info_card, text="\u24d8", font=("Consolas", 28, "bold"),
+                 bg=Colors.BG_PANEL, fg="#00d4ff").pack(pady=(8, 3))
+        tk.Label(info_card, text="SYSTEM INFO", font=Fonts.BUTTON_LG,
+                 bg=Colors.BG_PANEL, fg=Colors.TEXT_PRIMARY).pack()
+        tk.Label(info_card, text="View process flow\ndiagram",
+                 font=Fonts.LABEL_SMALL, bg=Colors.BG_PANEL,
+                 fg=Colors.TEXT_MUTED, justify="center").pack(pady=(3, 8))
+
+        for w in info_card.winfo_children():
+            w.bind("<Button-1>", lambda e: self.app.show_frame("info"))
+        info_card.bind("<Button-1>", lambda e: self.app.show_frame("info"))
+        info_card.config(cursor="hand2")
+
     def on_show(self):
         self.app.topbar.set_subtitle("Auto Mode")
