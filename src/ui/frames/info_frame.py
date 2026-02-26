@@ -65,21 +65,31 @@ class SvgViewerCanvas(tk.Canvas):
             self.create_text(
                 event.width // 2, event.height // 2,
                 text="system_diagram.svg not found",
-                fill="#ff4444", font=("Segoe UI", 14)
+                fill="#ff4444", font=("DejaVu Sans", 14, "bold")
             )
 
     # ── Core renderer ──────────────────────────────────────────────────────
     def _render(self, cw, ch):
-        # Expand diagram to fill the full canvas (was clipped by header row)
+        # Expand diagram to fill the full canvas
         svg_w, svg_h = 900, 560
         scale = min(cw / svg_w, ch / svg_h) * 0.97
         ox = (cw - svg_w * scale) / 2
         oy = (ch - svg_h * scale) / 2
 
+        # 1. Draw branding first (independent of SVG parsing)
+        self._draw_branding(cw, ch, scale, ox, oy)
+
+        # 2. Try to parse and draw the SVG nodes
         clean = re.sub(r'xmlns="[^"]+"', "", self._xml)
         try:
             root = ET.fromstring(clean)
-        except Exception:
+        except Exception as e:
+            print(f"DEBUG: SVG Parse Error: {e}")
+            self.create_text(
+                cw // 2, ch // 2 + 40,
+                text=f"SVG Parse Error: {str(e)[:50]}...",
+                fill="#ff8800", font=("DejaVu Sans", 10)
+            )
             return
 
         def resolve_color(fill: str) -> str:
@@ -98,10 +108,7 @@ class SvgViewerCanvas(tk.Canvas):
                     return True
             return False
 
-        def draw(node, tx=0.0, ty=0.0, skip=False):
-            if skip:
-                return
-
+        def draw(node, tx=0.0, ty=0.0):
             # Skip branding group
             if node.tag == "g" and is_branding_group(node):
                 return
@@ -146,8 +153,9 @@ class SvgViewerCanvas(tk.Canvas):
                 pts_raw = node.get("points", "").strip().split()
                 coords = []
                 for p in pts_raw:
-                    px, py = p.split(",")
-                    coords.extend([sx(px), sy(py)])
+                    if "," in p:
+                        px, py = p.split(",")
+                        coords.extend([sx(px), sy(py)])
                 if coords and fill:
                     self.create_polygon(coords, fill=fill, outline="", width=0)
 
@@ -175,7 +183,7 @@ class SvgViewerCanvas(tk.Canvas):
                 self.create_text(
                     sx(node.get("x", 0)), sy(node.get("y", 0)),
                     text=txt, fill=fcolor,
-                    font=("Segoe UI", fsize, "bold"),
+                    font=("DejaVu Sans", fsize, "bold"),
                     anchor=anchor
                 )
 
@@ -196,9 +204,6 @@ class SvgViewerCanvas(tk.Canvas):
         for child in root:
             draw(child)
 
-        # ── Company branding watermark (top-left, inside diagram area) ────
-        self._draw_branding(cw, ch, scale, ox, oy)
-
     def _draw_branding(self, cw, ch, scale, ox, oy):
         """Company name only."""
         lx = 28 * scale + ox
@@ -210,7 +215,7 @@ class SvgViewerCanvas(tk.Canvas):
         self.create_text(
             lx, ly + lh * 0.5,  # Centered vertically in the header zone
             text="Raj Enterprices", anchor="w",
-            fill="#d4eaf8", font=("Segoe UI", name_size, "bold")
+            fill="#d4eaf8", font=("DejaVu Sans", name_size, "bold")
         )
 
 
@@ -225,7 +230,9 @@ class InfoFrame(ttk.Frame):
 
     def on_show(self):
         self.app.topbar.set_subtitle("System Info")
-        self._viewer.after(50, self._force_redraw)
+        # Ensure dimensions are updated before rendering
+        self.update_idletasks()
+        self._viewer.after(100, self._force_redraw)
 
     def _force_redraw(self):
         w = self._viewer.winfo_width()
@@ -233,3 +240,6 @@ class InfoFrame(ttk.Frame):
         if w > 1 and h > 1:
             self._viewer.delete("all")
             self._viewer._render(w, h)
+        else:
+            # Retry if dimensions still not ready
+            self._viewer.after(100, self._force_redraw)

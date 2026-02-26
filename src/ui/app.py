@@ -86,6 +86,19 @@ class App:
         # ── Process Manager ──────────────────────────────────────────
         self.process_manager = ProcessManager(self.gpio, self.root)
 
+        # ── Watermark ────────────────────────────────────────────────
+        # Increased font size to 12
+        self.watermark = tk.Label(
+            self.root,
+            text="Raj Enterprices · 9766277409",
+            fg=Colors.TEXT_MUTED,
+            bg=Colors.BG_DARK,
+            font=("DejaVu Sans", 12, "bold"),
+            padx=10, pady=5
+        )
+        # Shifted lower by changing y-offset from -60 to -52
+        self.watermark.place(relx=1.0, rely=1.0, x=-10, y=-10, anchor="se")
+
         # ── Show home ────────────────────────────────────────────────
         self.show_frame("main")
         logger.info("App initialized successfully")
@@ -110,6 +123,9 @@ class App:
         frame = self.frames[name]
         frame.tkraise()
         self._current_frame = name
+
+        # Ensure watermark stays on top of the content
+        self.watermark.lift()
 
         if hasattr(frame, "on_show"):
             frame.on_show()
