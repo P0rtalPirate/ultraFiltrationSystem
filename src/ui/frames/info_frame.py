@@ -11,9 +11,21 @@ from pathlib import Path
 import re
 import xml.etree.ElementTree as ET
 
-from src.ui.theme import Colors
+import logging
 
-_PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent.parent
+logger = logging.getLogger("UltraFiltration.Info")
+
+def _find_project_root():
+    """Navigate up from this file until we find the 'branding' directory."""
+    curr = Path(__file__).resolve().parent
+    for _ in range(6):
+        if (curr / "branding").exists():
+            return curr
+        curr = curr.parent
+    # Fallback to the old logic if branding folder not found nearby
+    return Path(__file__).resolve().parent.parent.parent.parent
+
+_PROJECT_ROOT = _find_project_root()
 _SVG_PATH = _PROJECT_ROOT / "branding" / "system_diagram.svg"
 
 # These y-values identify the separator lines we want to skip (SVG coords)
@@ -34,10 +46,21 @@ class SvgViewerCanvas(tk.Canvas):
         self._xml = ""
         self._gradients: dict[str, str] = {}
 
+        logger.debug(f"SVG Search Path: {_SVG_PATH}")
+
         try:
-            self._xml = _SVG_PATH.read_text(encoding="utf-8")
-            self._parse_gradients()
-        except Exception:
+            if _SVG_PATH.exists():
+                self._xml = _SVG_PATH.read_text(encoding="utf-8").strip()
+                if self._xml:
+                    logger.info(f"Loaded SVG: {_SVG_PATH} ({len(self._xml)} bytes)")
+                    self._parse_gradients()
+                else:
+                    logger.error(f"SVG file is empty: {_SVG_PATH}")
+            else:
+                logger.error(f"SVG file not found at: {_SVG_PATH}")
+                self._xml = ""
+        except Exception as e:
+            logger.error(f"Error reading SVG: {e}")
             self._xml = ""
 
         self.bind("<Configure>", self._on_resize)
@@ -70,6 +93,10 @@ class SvgViewerCanvas(tk.Canvas):
 
     # ── Core renderer ──────────────────────────────────────────────────────
     def _render(self, cw, ch):
+        """Core rendering logic."""
+        if not self._xml:
+            return
+
         # Expand diagram to fill the full canvas
         svg_w, svg_h = 900, 560
         scale = min(cw / svg_w, ch / svg_h) * 0.97
@@ -239,7 +266,14 @@ class InfoFrame(ttk.Frame):
         h = self._viewer.winfo_height()
         if w > 1 and h > 1:
             self._viewer.delete("all")
-            self._viewer._render(w, h)
+            if self._viewer._xml:
+                self._viewer._render(w, h)
+            else:
+                # If XML is missing, at least draw the branding
+                scale = min(w / 900, h / 560) * 0.97
+                ox = (w - 900 * scale) / 2
+                oy = (h - 560 * scale) / 2
+                self._viewer._draw_branding(w, h, scale, ox, oy)
         else:
             # Retry if dimensions still not ready
             self._viewer.after(100, self._force_redraw)
