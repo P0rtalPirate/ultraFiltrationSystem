@@ -9,6 +9,7 @@ from tkinter import ttk
 
 from src.config import VALVE_LABELS
 from src.ui.theme import Colors, Fonts
+from src.ui.frames.info_frame import LiveFlowSvgCanvas
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -213,13 +214,16 @@ class RoundedProgressBar(tk.Canvas):
 #  Auto Frame
 # ─────────────────────────────────────────────────────────────────────────────
 class AutoFrame(ttk.Frame):
-    """Displays the automated filtration cycle with live status."""
+    """Displays the automated filtration cycle with live status.
+    Toggle switches between Status cards view and Live Flow diagram view."""
 
     def __init__(self, parent, app):
         super().__init__(parent, style="TFrame")
         self.app = app
         self._cards: dict[int, IndicatorCard] = {}
+        self._channel_states: dict[int, bool] = {i: False for i in range(1, 8)}
         self._back_locked = False
+        self._show_live_flow = False
         self._build()
 
     def _build(self):
@@ -228,10 +232,35 @@ class AutoFrame(ttk.Frame):
             self, text="Initializing...", style="Status.TLabel",
             font=Fonts.HEADING
         )
-        self._process_label.pack(pady=(15, 10))
+        self._process_label.pack(pady=(15, 4))
 
-        # Valve indicators
-        grid = ttk.Frame(self, style="TFrame")
+        # Toggle row: Status cards vs Live flow diagram
+        toggle_row = ttk.Frame(self, style="TFrame")
+        toggle_row.pack(pady=(0, 8))
+        self._btn_status = tk.Button(
+            toggle_row, text="Status", font=Fonts.BODY_BOLD,
+            bg=Colors.BUTTON_BG, fg=Colors.BUTTON_FG, activebackground=Colors.BUTTON_HOVER,
+            activeforeground=Colors.BUTTON_FG, relief="flat", padx=16, pady=6,
+            cursor="hand2", command=lambda: self._switch_view(False)
+        )
+        self._btn_status.pack(side="left", padx=4)
+        self._btn_flow = tk.Button(
+            toggle_row, text="Live flow", font=Fonts.BODY_BOLD,
+            bg=Colors.BG_PANEL, fg=Colors.TEXT_MUTED, activebackground=Colors.BUTTON_HOVER,
+            activeforeground=Colors.BUTTON_FG, relief="flat", padx=16, pady=6,
+            cursor="hand2", command=lambda: self._switch_view(True)
+        )
+        self._btn_flow.pack(side="left", padx=4)
+
+        # Container for both panels (only one visible)
+        self._panels_container = ttk.Frame(self, style="TFrame")
+        self._panels_container.pack(fill="both", expand=True)
+
+        # ── Cards panel (valve indicators + progress bar) ──
+        self._cards_panel = ttk.Frame(self._panels_container, style="TFrame")
+        self._cards_panel.place(in_=self._panels_container, x=0, y=0, relwidth=1, relheight=1)
+
+        grid = ttk.Frame(self._cards_panel, style="TFrame")
         grid.pack(expand=True)
 
         row1 = ttk.Frame(grid, style="TFrame")
@@ -248,13 +277,47 @@ class AutoFrame(ttk.Frame):
             card.pack(side="left", padx=5)
             self._cards[cid] = card
 
-        # Rounded progress bar
-        self._progress = RoundedProgressBar(self, width=580)
+        self._progress = RoundedProgressBar(self._cards_panel, width=580)
         self._progress.pack(pady=(15, 5))
 
-        # Info label
-        self._time_label = ttk.Label(self, text="", style="Muted.TLabel")
+        self._time_label = ttk.Label(self._cards_panel, text="", style="Muted.TLabel")
         self._time_label.pack(pady=(0, 10))
+
+        # ── Live flow panel (system diagram with live valve/pump state) ──
+        self._flow_panel = ttk.Frame(self._panels_container, style="TFrame")
+        self._flow_panel.place(in_=self._panels_container, x=0, y=0, relwidth=1, relheight=1)
+        self._flow_viewer = LiveFlowSvgCanvas(self._flow_panel)
+        self._flow_viewer.pack(fill="both", expand=True)
+
+        # Show cards by default, hide flow
+        self._cards_panel.tkraise()
+        self._flow_panel.lower()
+        self._update_toggle_buttons()
+
+    def _switch_view(self, show_live_flow: bool):
+        self._show_live_flow = show_live_flow
+        if show_live_flow:
+            self._flow_panel.tkraise()
+            self.update_idletasks()
+            self._sync_flow_viewer_state()
+            # Force flow viewer to redraw with correct size (so pipe flow is visible)
+            self._flow_viewer.after(80, self._flow_viewer._refresh_after_show)
+        else:
+            self._cards_panel.tkraise()
+        self._update_toggle_buttons()
+
+    def _update_toggle_buttons(self):
+        if self._show_live_flow:
+            self._btn_flow.config(bg=Colors.BUTTON_BG, fg=Colors.BUTTON_FG)
+            self._btn_status.config(bg=Colors.BG_PANEL, fg=Colors.TEXT_MUTED)
+        else:
+            self._btn_status.config(bg=Colors.BUTTON_BG, fg=Colors.BUTTON_FG)
+            self._btn_flow.config(bg=Colors.BG_PANEL, fg=Colors.TEXT_MUTED)
+
+    def _sync_flow_viewer_state(self):
+        """Push current channel states to the flow viewer (e.g. after switching to flow view)."""
+        for cid, is_on in self._channel_states.items():
+            self._flow_viewer.update_channel_state(cid, is_on)
 
     # ── Callbacks from ProcessManager ────────────────────────────────
 
@@ -294,8 +357,11 @@ class AutoFrame(ttk.Frame):
         self._time_label.config(text="Waiting for next process...")
 
     def on_valve_change(self, channel_id: int, is_on: bool):
+        self._channel_states[channel_id] = is_on
         if channel_id in self._cards:
             self._cards[channel_id].set_state(is_on)
+        if hasattr(self, "_flow_viewer"):
+            self._flow_viewer.update_channel_state(channel_id, is_on)
 
     def go_back(self):
         if self._back_locked:
@@ -326,8 +392,12 @@ class AutoFrame(ttk.Frame):
         if hasattr(self, "_stop_job"):
             self.after_cancel(self._stop_job)
         self._process_label.config(text="Stopped", foreground=Colors.TEXT_MUTED)
+        for cid in self._channel_states:
+            self._channel_states[cid] = False
         for card in self._cards.values():
             card.set_state(False)
+        for cid in range(1, 8):
+            self._flow_viewer.update_channel_state(cid, False)
         self._back_locked = False
         self.app.show_frame("select")
 
@@ -336,8 +406,12 @@ class AutoFrame(ttk.Frame):
         self._process_label.config(
             text="Starting cycle...", foreground=Colors.INFO
         )
+        for cid in self._channel_states:
+            self._channel_states[cid] = False
         for card in self._cards.values():
             card.set_state(False)
+        for cid in range(1, 8):
+            self._flow_viewer.update_channel_state(cid, False)
         self._progress.reset()
         self._time_label.config(text="")
 
