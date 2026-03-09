@@ -122,12 +122,17 @@ python3 -m nuitka --follow-imports \
 if [ -f "ultra-filt" ]; then
     echo "✅ Compilation successful: Binary created."
     
-    # 6. Wipe Phase (Cleanup Source)
+    # 6. Wipe Phase (Cleanup Source) — keep branding/ for in-app Info page SVG
     echo "🧹 Wiping source code for security..."
     rm -rf src/
     rm -f pyproject.toml requirements.txt .gitignore README.md HARDWARE.md
     rm -rf .git/
     rm -rf *.build/ *.dist/ *.onefile-build/
+    if [ -f "branding/system_diagram.svg" ]; then
+        echo "   ✔  branding/system_diagram.svg kept for Info page."
+    else
+        echo "   ⚠️  branding/system_diagram.svg missing — Info page will show placeholder."
+    fi
 else
     echo "❌ Compilation failed. Keeping source code for safety."
 fi

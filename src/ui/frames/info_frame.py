@@ -5,6 +5,7 @@ Company branding is drawn as an overlay in the bottom-right corner.
 The SVG's own header/footer branding is skipped.
 """
 
+import sys
 import tkinter as tk
 from tkinter import ttk
 from pathlib import Path
@@ -16,13 +17,28 @@ import logging
 logger = logging.getLogger("UltraFiltration.Info")
 
 def _find_project_root():
-    """Navigate up from this file until we find the 'branding' directory."""
+    """Resolve project root so branding/system_diagram.svg can be found.
+    When running as Nuitka onefile on Pi, __file__ is inside the bundle;
+    use cwd (WorkingDirectory) or executable dir so the install-dir branding/ is found.
+    """
+    svg_rel = Path("branding") / "system_diagram.svg"
+    # 1) Working directory (Pi: systemd sets WorkingDirectory=$INSTALL_DIR)
+    cwd = Path.cwd()
+    if (cwd / svg_rel).exists():
+        return cwd
+    # 2) Directory containing the executable (Pi: INSTALL_DIR where ultra-filt lives)
+    try:
+        exe_dir = Path(sys.executable).resolve().parent
+        if (exe_dir / svg_rel).exists():
+            return exe_dir
+    except Exception:
+        pass
+    # 3) Walk up from this file (development / run from source)
     curr = Path(__file__).resolve().parent
     for _ in range(6):
         if (curr / "branding").exists():
             return curr
         curr = curr.parent
-    # Fallback to the old logic if branding folder not found nearby
     return Path(__file__).resolve().parent.parent.parent.parent
 
 _PROJECT_ROOT = _find_project_root()
