@@ -31,6 +31,10 @@ Run this single command on your Raspberry Pi to install everything and set up au
 ```bash
 curl -sSL https://raw.githubusercontent.com/P0rtalPirate/ultraFiltrationSystem/main/scripts/install.sh | bash
 ```
+To install from a specific branch (e.g. `correct_info_screen`), pass the branch name:
+```bash
+curl -sSL https://raw.githubusercontent.com/P0rtalPirate/ultraFiltrationSystem/correct_info_screen/scripts/install.sh | bash -s correct_info_screen
+```
 
 ## Installation (Manual)
 1. **Clone the repository**:

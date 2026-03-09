@@ -3,10 +3,14 @@
 # UltraFiltration Advanced Installer (Raj Enterprices)
 # Handles: Nuitka Compilation, Minimal GUI (Lite OS), and Branded Splash
 # Tested on Raspberry Pi OS (Lite - 64-bit)
+#
+# Usage: curl -sSL <url> | bash -s [branch]
+#   branch: optional, e.g. correct_info_screen or main (default: main)
 
 set -e
 
-echo "🚀 Starting Advanced UltraFiltration Setup (Raj Enterprices)..."
+BRANCH="${1:-main}"
+echo "🚀 Starting Advanced UltraFiltration Setup (Raj Enterprices) [branch=$BRANCH]..."
 
 # 1. Update system and install dependencies
 echo "📦 Installing system dependencies..."
@@ -25,13 +29,19 @@ sudo usermod -a -G video,input $(whoami)
 # 2. Clone or Restore repository
 INSTALL_DIR="$HOME/ultraFiltrationSystem"
 if [ ! -d "$INSTALL_DIR/.git" ] && [ ! -d "$INSTALL_DIR/src" ]; then
-    echo "📂 Source missing or wiped. (Re)Cloning repository..."
-    # If directory exists but no .git, we might be in a wiped state. 
-    # Move existing files to a temp area to avoid git clone conflicts
+    echo "📂 Source missing or wiped. (Re)Cloning repository (branch=$BRANCH)..."
     if [ -d "$INSTALL_DIR" ]; then
         mv "$INSTALL_DIR" "${INSTALL_DIR}_backup_$(date +%s)"
     fi
-    git clone https://github.com/P0rtalPirate/ultraFiltrationSystem.git "$INSTALL_DIR"
+    git clone -b "$BRANCH" https://github.com/P0rtalPirate/ultraFiltrationSystem.git "$INSTALL_DIR"
+else
+    echo "📂 Updating existing source (branch=$BRANCH)..."
+    cd "$INSTALL_DIR"
+    if [ -d ".git" ]; then
+        git fetch origin "$BRANCH" 2>/dev/null || git fetch origin
+        git checkout "$BRANCH" 2>/dev/null || true
+        git pull origin "$BRANCH" 2>/dev/null || git pull || true
+    fi
 fi
 
 cd "$INSTALL_DIR"
@@ -174,8 +184,8 @@ xset s noblank &
 # Hide cursor after 0 seconds of inactivity
 unclutter -idle 0 &
 
-# Start UltraFiltration Binary in Fullscreen
-$INSTALL_DIR/ultra-filt &
+# Start UltraFiltration Binary in Fullscreen (cd ensures branding/ SVG is found)
+cd "$INSTALL_DIR" && $INSTALL_DIR/ultra-filt &
 EOF
 
 # ── Disable screen blanking (kernel + raspi-config layers) ─────────────────
